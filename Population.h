@@ -6,6 +6,7 @@
 #define THE_ARK_POPULATION_H
 #include <vector>
 
+using std::vector;
 
 class Human {
 private:
@@ -28,8 +29,6 @@ private:
 public:
     Human();
     Human(unsigned int mentalStability,  unsigned int common_status_of_the_ark);
-
-    unsigned int getId() const;
 
     unsigned int getMentalStability() const;
 
@@ -66,7 +65,10 @@ public:
 
 class Population {
 private:
-    unsigned int children, adults, oldmen;
+    unsigned int children;
+    unsigned int adults;
+    unsigned int oldmen;
+    unsigned int number_of_people; // количество людей на корабле
     unsigned int borderChildrenToAdults();
     unsigned int borderAdultsToOldmen();
     double deathRateChildren();
@@ -74,9 +76,7 @@ private:
     double deathRateOldmen();
 public:
     Population();
-    std :: vector<Human> people;
-
-    unsigned int number_of_people; // количество людей на корабле
+    vector<Human> people;
 
     unsigned int get_number_of_people() const;
 
@@ -88,7 +88,5 @@ public:
     void init(unsigned int total);
     void processYear(); // итерация по всем категориям населения - кто перешел из категорию в категорию, обработка смертности
 };
-
-
 
 #endif //THE_ARK_POPULATION_H

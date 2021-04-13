@@ -2,13 +2,25 @@
 // Created by Amisto on 4/2/2021.
 //
 
+// ТЕРМИНОЛОГИЯ: ПСИХОЛОГИ - это ученые и инженеры, УЧЕНЫЕ - это ученые
+
 #ifndef THE_ARK_SOCIALSERVICE_H
 #define THE_ARK_SOCIALSERVICE_H
 
+#include "TheArk.h"
 #include "Service.h"
+#include "Population.h"
 
 class SocialService : public Service {
 private:
+    unsigned int efficiency_percentage; // эффективность работы одного психолога в количестве вылечивших за год
+
+    vector<Human*> staff;
+    vector<Human*> clients;
+    unsigned int n_staff_we_want;
+
+    void update_n_staff_we_want();
+    void update_people();
 public:
     SocialService();
 
@@ -17,8 +29,14 @@ public:
     double getState() override;                             // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
     void setState(double s) override;                       // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
 
+    unsigned int getResourceDemand() override;           // сколько ресурсов требуется
+    unsigned int getResourcePriority() override;         // с каким приоритетом служба будет требовать ресурсы
+    unsigned int getStaffDemand() override;              // сколько людей требуется
+    unsigned int getStaffPriority() override;            // с каким приоритетом слуюба будет требовать людей
+    bool changeStaff (int delta) override;               // сколько людей добавили или забрали (в т.ч. смертность)
+    bool changeResources(int delta) override;            // сколько ресурсов добавили или забрали (в т.ч. износ)
+
     unsigned int borderChildrenToAdults();
 };
-
 
 #endif //THE_ARK_SOCIALSERVICE_H
