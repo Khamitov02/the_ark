@@ -38,7 +38,7 @@ private:
     static TheArk* instance;
 public:
     static TheArk* get_instance();
-
+    
     void init(std::istream *is, std::ostream *os);     // интерфейс - ввод
     void snap();                     // интерфейс - вывод, использует os
 
