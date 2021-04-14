@@ -7,7 +7,7 @@
 #include "MedicalService.h"
 #include "SocialService.h"
 #include <cstdlib>
-Population::Population() : children(0), adults(0), oldmen(0), number_of_people(0){}
+Population::Population() : children(0), adults(0), oldmen(0){}
 
 unsigned int Population::get_number_of_people() const{
     return people.size();
@@ -35,7 +35,7 @@ void Population::processYear() {
     oldmen = 0;
     children = 0;
     std :: vector<Human> :: iterator it;
-    for(it = people.begin(); it != people.end(); it++){
+    for(it = people.begin(); it != people.end(); ++it){
         it->age++;
         HisAge = it->age;
         if(HisAge < borderChildrenToAdults() )      children++;
@@ -43,7 +43,6 @@ void Population::processYear() {
         if(HisAge >= borderAdultsToOldmen() && HisAge <= 100)      oldmen++;
         if(HisAge > 100)    people.erase(it);
     }
-
 }
 
 unsigned int Population::borderChildrenToAdults()
@@ -76,8 +75,7 @@ void Population::init(unsigned int total) {
     children = 0.1 * total;
     oldmen = 0.2 * total;
     adults = total - children - oldmen;
-    this->number_of_people = total;
-    people.reserve(number_of_people);
+    people.reserve(total);
 
     for(int i = 0; i < children; i++){
         Human person;
@@ -94,21 +92,40 @@ void Population::init(unsigned int total) {
         person.setAge(borderAdultsToOldmen()+ rand()% (100 - borderAdultsToOldmen() + 1));
         people.push_back(person);
     }
-    number_of_people = people.size();
 }
 
 
-/////////////////////////////////////////////////Human////////////////////////////////////////////////////////////
+//-----------------------Human-------------------------//
+
+Human::Human(): Human(10, 100){}
+
+Human::Human(unsigned int mentalStability, unsigned int PhysicalHealth)
+{
+    this->MENTAL_STABILITY = mentalStability;
+    this->age = 0;
+
+    this->amount_of_black_accidents = 0;
+    this->type_as_a_worker = -1;
+    this->is_alive = true;
+    this->is_able_to_work = false;
+    this->is_able_to_study = false;
+
+    this->physical_health = PhysicalHealth;
+    this->moral_health = 100;
+    this->year_of_education = -1;
+
+}
+
+Human::Human(unsigned int common_status_of_the_ark):
+    Human(10, 100){
+    this->physical_health *= (common_status_of_the_ark / 100);
+}
 unsigned int Human::getMentalStability() const {
     return MENTAL_STABILITY;
 }
 
 unsigned int Human::getAge() const {
     return age;
-}
-
-unsigned int Human::getLevelOfAnger() const {
-    return level_of_anger;
 }
 
 unsigned int Human::getPhysicalHealth() const {
@@ -123,6 +140,14 @@ unsigned int Human::getTypeAsAWorker() const {
     return type_as_a_worker;
 }
 
+unsigned int Human::getAmountOfBlackAccidents() const {
+    return amount_of_black_accidents;
+}
+
+unsigned int Human::getYearOfEducation() const {
+    return year_of_education;
+}
+
 bool Human::isAlive() const {
     return is_alive;
 }
@@ -131,13 +156,17 @@ bool Human::isAbleToWork() const {
     return is_able_to_work;
 }
 
-
-void Human::setAge(int age) {
-    this->age = age;
+void Human::setAmountOfBlackAccidents(unsigned int amountOfBlackAccidents) {
+    amount_of_black_accidents = amountOfBlackAccidents;
 }
 
-void Human::setLevelOfAnger(unsigned int levelOfAnger) {
-    this->level_of_anger = levelOfAnger;
+
+void Human::setYearOfEducation(unsigned int yearOfEducation) {
+    year_of_education = yearOfEducation;
+}
+
+void Human::setAge(int Age) {
+    this->age = Age;
 }
 
 void Human::setPhysicalHealth(unsigned int physicalHealth) {
@@ -159,18 +188,17 @@ void Human::setIsAlive(bool isAlive) {
 void Human::setIsAbleToWork(bool isAbleToWork) {
     is_able_to_work = isAbleToWork;
 }
-Human::Human(): Human(10,0){}
-Human::Human(unsigned int mentalStability, unsigned int common_status_of_the_ark):
-        MENTAL_STABILITY(mentalStability),
-        age(0),
-        level_of_anger(0),
-        moral_health(100),
-        amount_of_black_accidents(0),
-        type_as_a_worker(0),
-        is_alive(true),
-        is_able_to_work(false)
-{
-    //
+
+
+
+bool Human::isAbleToStudy() const {
+    return this->is_able_to_study;
 }
+
+void Human::setIsAbleToStudy(bool isAbleToStudy) {
+    this->is_able_to_study = isAbleToStudy;
+}
+
+
 
 

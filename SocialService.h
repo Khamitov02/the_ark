@@ -10,22 +10,36 @@
 #include "TheArk.h"
 #include "Service.h"
 #include "Population.h"
+#include <queue>
+
+using std::priority_queue;
+
+class ComparePersonsByMentalHealth{
+public:
+    bool operator() (const Human* per1, const Human* per2)
+    {
+        return per1->getMoralHealth() < per2->getMoralHealth();
+    }
+};
 
 class SocialService : public Service {
 private:
     unsigned int efficiency_percentage; // эффективность работы одного психолога в количестве вылечивших за год
+    unsigned int n_years_of_education;
+    unsigned int suicide_counter;
 
     vector<Human*> staff;
-    vector<Human*> clients;
-    unsigned int n_staff_we_want;
+    priority_queue<Human*, vector<Human*>, ComparePersonsByMentalHealth> clients;
+
+    unsigned int n_staff_we_want{};
 
     void update_n_staff_we_want();
+    void update_person(Human& person);
     void update_people();
 public:
     SocialService();
-
     void process_accident(AccidentSeverity as) override;    // каждая служба должна уметь в своих терминах обработать переданную ей аварию
-    void process_year() override {};                        // если у службы есть какая-то личная жизнь, она может заниматься ей тут
+    void process_year() override;                        // если у службы есть какая-то личная жизнь, она может заниматься ей тут
     double getState() override;                             // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
     void setState(double s) override;                       // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
 
@@ -38,5 +52,6 @@ public:
 
     unsigned int borderChildrenToAdults();
 };
+
 
 #endif //THE_ARK_SOCIALSERVICE_H

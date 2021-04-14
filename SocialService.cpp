@@ -8,7 +8,10 @@ SocialService::SocialService()
 {
     this->efficiency_percentage = 15;
     this->staff.resize(0);
-    this->clients.resize(0);
+    this->n_years_of_education = 5; // <- все изначально учатся 5 лет
+    this->n_staff_we_want = 50; // <- на всякий случай, вдруг что поломается
+    this->update_n_staff_we_want();
+    this->suicide_counter = 0;
 }
 
 void SocialService::process_accident(AccidentSeverity as)
@@ -51,9 +54,63 @@ bool SocialService::changeStaff (int delta) {/*сделаем, если потр
 bool SocialService::changeResources(int delta){/*сделаем, если потребуется*/
     return true;}
 
-void SocialService::update_people() {/*Currently nothing to do*/}
+void SocialService::update_people(){
+    for (auto person : TheArk::get_instance()->getPopulation()->people)
+    {
+        this->update_person(person);
+    }
+}
 
+// самый главный самый жырный метод
+void SocialService::process_year() {
+    this->update_people();
+    // так же тут будет обработка действий службы и тд и тп
+}
 
+void SocialService::update_person(Human &person) {
 
+    // логика "если плохих событий не меньше, чем ментальная стабильность - то минус ментальное здоровье"
+    if (person.getMentalStability() <= person.getAmountOfBlackAccidents())
+        person.setMoralHealth( (unsigned int)(person.getMoralHealth()/(1.2)) );
 
+    // логика "влияние ментального здоровья на жизнедеятельность"
+    if (person.getMoralHealth() < 30) {
+        if (person.getMoralHealth() < 20)
+            if (person.isAbleToWork())
+                person.setIsAbleToWork(false);
+        if (person.isAbleToStudy())
+            person.setIsAbleToStudy(false);
+        if (person.getMoralHealth() < 3)
+            person.setIsAlive(false);
+    }
+    else {
+        if (person.getTypeAsAWorker()){
+            if (person.getYearOfEducation()) {
+                person.setIsAbleToWork(false);
+                person.setIsAbleToStudy(true);
+            } else {
+                person.setIsAbleToWork(true);
+                person.setIsAbleToStudy(false);
+            }
+        }
+    }
 
+    // логика "сособен ли обучаться"
+    if (!person.isAbleToStudy())
+        if (person.getAge() >= this->borderChildrenToAdults())
+            person.setIsAbleToStudy(true);
+
+    // логика "обработка обучения": если может, человек начинает учиться
+    if (person.isAbleToStudy())
+        person.setYearOfEducation(person.getYearOfEducation() + 1);
+    if (person.getYearOfEducation() > 5) {
+        person.setYearOfEducation(0);
+        person.setIsAbleToWork(true);
+        person.setIsAbleToStudy(false);
+    }
+
+    // логика добавления в клиенты службы
+    if (person.getMoralHealth() < 70)
+        clients.push(&person); // <- добавил поинтер в очередь
+        // пока думаю, как обрабатывать повторы
+}
