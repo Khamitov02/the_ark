@@ -5,6 +5,12 @@
 #ifndef THE_ARK_HUMAN_H
 #define THE_ARK_HUMAN_H
 
+enum Profession {
+    UNEMPLOYED,
+    WORKER,
+    SCIENTIST,
+    UNDEFINED
+};
 
 class Human {
 private:
@@ -17,7 +23,7 @@ private:
     // если их больше, чем моральная стабильность, то моральное здоровье человека уменьшается
     // <- это поле контролирует СС
 
-    unsigned int type_as_a_worker; // давайте условимся: 2 - ученый, 1 - рабочий; 0 - нет профессии
+    Profession type_as_a_worker; // возможный тип профессии можно увидеть в enum, в начале файла
 
     unsigned int year_of_education; // 0 - не учится
     // <- это поле контролирует СС
@@ -35,7 +41,7 @@ public:
     unsigned int getAge() const;
     unsigned int getPhysicalHealth() const;
     unsigned int getMoralHealth() const;
-    unsigned int getTypeAsAWorker() const;
+    Profession getTypeAsAWorker() const;
     unsigned int getAmountOfBlackAccidents() const;
     unsigned int getYearOfEducation() const;
     bool isAlive() const;
@@ -45,7 +51,7 @@ public:
     void setAge(int Age);
     void setPhysicalHealth(unsigned int physicalHealth);
     void setMoralHealth(unsigned int moralHealth);
-    void setTypeAsAWorker(unsigned int typeAsAWorker);
+    void setTypeAsAWorker(Profession typeAsAWorker);
     void setIsAlive(bool isAlive);
     void setIsAbleToWork(bool isAbleToWork);
     void setIsAbleToStudy(bool isAbleToStudy);

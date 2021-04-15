@@ -14,7 +14,7 @@ Human::Human(unsigned int mentalStability, unsigned int PhysicalHealth)
     this->age = 0;
 
     this->amount_of_black_accidents = 0;
-    this->type_as_a_worker = -1;
+    this->type_as_a_worker = UNDEFINED;
     this->is_alive = true;
     this->is_able_to_work = false;
     this->is_able_to_study = false;
@@ -45,7 +45,7 @@ unsigned int Human::getMoralHealth() const {
     return moral_health;
 }
 
-unsigned int Human::getTypeAsAWorker() const {
+Profession Human::getTypeAsAWorker() const {
     return type_as_a_worker;
 }
 
@@ -86,7 +86,7 @@ void Human::setMoralHealth(unsigned int moralHealth) {
     this->moral_health = moralHealth;
 }
 
-void Human::setTypeAsAWorker(unsigned int typeAsAWorker) {
+void Human::setTypeAsAWorker(Profession typeAsAWorker) {
     this->type_as_a_worker = typeAsAWorker;
 }
 
