@@ -1,12 +1,10 @@
 #include "TheArk.h"
-
 #include "TechnicalService.h"
 #include "BiologicalService.h"
 #include "MedicalService.h"
 #include "NavigationService.h"
 #include "EmergencyService.h"
 #include "SocialService.h"
-
 #include "Population.h"
 #include "Resources.h"
 
@@ -50,14 +48,14 @@ void TheArk::init(std::istream *_is, std::ostream *_os)
     os = _os;
     auto &is_init = *_is;
 
+    population = new Population();
+    resources = new Resources();
     services[0] = new TechnicalService();
     services[1] = new BiologicalService();
     services[2] = new MedicalService();
     services[3] = new NavigationService();
     services[4] = new EmergencyService();
     services[5] = new SocialService();
-    population = new Population();
-    resources = new Resources();
 
     is_init >> years_total;
 
