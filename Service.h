@@ -6,8 +6,9 @@
 #define THE_ARK_SERVICE_H
 
 enum AccidentSeverity {
-    NEGLIGIBLE,
+    // давайте обусловимся оуенивать порядок серьёзности события, порядком в этом enum, критика принимается (WoDees)
     LIGHT,
+    NEGLIGIBLE,
     MEDIUM,
     SEVERE,
     DISASTROUS,

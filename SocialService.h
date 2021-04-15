@@ -11,6 +11,7 @@
 #include "Service.h"
 #include "Population.h"
 #include <queue>
+#include <stdlib.h>
 
 using std::priority_queue;
 
@@ -30,6 +31,10 @@ private:
 
     vector<Human*> staff;
     priority_queue<Human*, vector<Human*>, ComparePersonsByMentalHealth> clients;
+
+    unsigned int count_all_accident_severity = 0; // полное число поступивих чрезвычайных событий
+    unsigned int count_resolved_accident_severity = 0; // число чрезвычайных событий, которые удалось успешно решить
+    unsigned int count_unresolved_accident_severity = 0; // число чрезвычайных событий, которые не удалось успешно решить
 
     unsigned int n_staff_we_want{};
 

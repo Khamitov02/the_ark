@@ -14,7 +14,7 @@ Human::Human(unsigned int mentalStability, unsigned int PhysicalHealth)
     this->age = 0;
 
     this->amount_of_black_accidents = 0;
-    this->type_as_a_worker = UNDEFINED;
+    this->type_as_a_worker = Profession::UNDEFINED;
     this->is_alive = true;
     this->is_able_to_work = false;
     this->is_able_to_study = false;
