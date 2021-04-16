@@ -34,14 +34,17 @@ void Population::processYear() {
     adults = 0;
     oldmen = 0;
     children = 0;
-    std :: vector<Human> :: iterator it;
-    for(it = people.begin(); it != people.end(); ++it){
-        it->age++;
-        HisAge = it->age;
-        if(HisAge < borderChildrenToAdults() )      children++;
-        if(HisAge >= borderChildrenToAdults() && HisAge < borderAdultsToOldmen())      adults++;
-        if(HisAge >= borderAdultsToOldmen() && HisAge <= 100)      oldmen++;
-        if(HisAge > 100)    people.erase(it);
+    std :: list<Human> :: iterator it;
+    for(int el = 0; el < 7; el++) {
+        for (it = people[el].begin(); it != people[el].end(); ++it) {
+            it->age;
+            HisAge = it->age;
+            if (HisAge < borderChildrenToAdults()) children++;
+            if (HisAge >= borderChildrenToAdults() && HisAge < borderAdultsToOldmen()) adults++;
+            if (HisAge >= borderAdultsToOldmen() && HisAge <= 100) oldmen++;
+            it->age++;
+            if (HisAge > 100) people[el].erase(it);
+        }
     }
 }
 
@@ -75,22 +78,33 @@ void Population::init(unsigned int total) {
     children = 0.1 * total;
     oldmen = 0.2 * total;
     adults = total - children - oldmen;
-    people.reserve(total);
 
-    for(int i = 0; i < children; i++){
+    for(int i = 0; i < 7; i++){     // инициализируем массив
+        list<Human> vec;
+        people[i] = vec;
+    }
+
+    for(int i = 0; i < children; i++){          // заполняем детьми
         Human person;
         person.setAge(rand()% borderChildrenToAdults());
-        people.push_back(person);
+        people[6].push_back(person);
     }
-    for(int i = 0; i < adults; i++){
-        Human person;
-        person.setAge(borderChildrenToAdults()+ rand()% (borderAdultsToOldmen() - borderChildrenToAdults() + 1));
-        people.push_back(person);
-    }
-    for(int i = 0; i < oldmen; i++){
+    for(int i = 0; i < oldmen; i++){            // заполняем стариками
         Human person;
         person.setAge(borderAdultsToOldmen()+ rand()% (100 - borderAdultsToOldmen() + 1));
-        people.push_back(person);
+        people[6].push_back(person);
+    }
+
+    int other = total - children - oldmen;
+    for(int i = 0; i < 7; i++){         // заполняем вектора для служб ???????
+
+    }
+
+
+    for(int i = 0; i < adults; i++){        // заполняем взрослыми всех остальных людей
+        Human person;
+        person.setAge(borderChildrenToAdults()+ rand()% (borderAdultsToOldmen() - borderChildrenToAdults() + 1));
+        people[6].push_back(person);
     }
 }
 
