@@ -5,29 +5,42 @@
 #ifndef THE_ARK_RESOURCES_H
 #define THE_ARK_RESOURCES_H
 
+#include <vector>
+
+class Resource {
+private:
+	unsigned int amount;
+
+public:
+	Resource(unsigned int total);		                // init user's amount of general resource
+	void GetResource(unsigned int isReturned);		// add recycled junk to available resources
+	void GiveResource(unsigned int isNeeded);		// remove an amount of currently used resources
+	unsigned int ReturnTotal() const;
+};
 
 class Resources {
 private:
-    unsigned int consumables, components, used, junk, refuse;
-    unsigned int componentsToUsed, usedToJunk;      // выставляются TheArk, могут мменяться каждый год
-    double efficiencyConsumablesToComponents();     // как быстро расходники перерабатываются в компоненты
-    double efficiencyJunkToConsumables();           // как быстро хлам перерабатываются в расходники
-    double efficiencyJunkToRefuse();                // как быстро хлам перерабатываются в отходы
+	unsigned int consumables, components, junk, refuse, used;
+
+	std::vector<unsigned int> used_by_services;                // vector contains an amount of current used resources for each service
+	double efficiencyConsumablesToComponents() const;          // processing consumables to components // TS
+	double efficiencyJunkToConsumables() const;                // recycling junk to consumablse // TS
+	double efficiencyJunkToRefuse() const;                     // recycling junk to refuse // TS
+
 public:
-    Resources();
+   	Resources();
 
-    unsigned int getConsumables() const;
-    unsigned int getUsed() const;
-    unsigned int getJunk() const;
-    unsigned int getRefuse() const;
-    unsigned int getComponents() const;
+	unsigned int getConsumables() const;
+	unsigned int getUsed() const;
+	unsigned int getJunk() const;
+	unsigned int getRefuse() const;
+	unsigned int getComponents() const;
 
-    void setComponentsToUsed(unsigned int current_usage);
-    void setUsedToJunk(unsigned int current_broken);
+	void setComponentsToUsed(unsigned int current_usage, int id); 		// method to be called by services to get resources
+	void setUsedToJunk(unsigned int current_broken, int id);		// method to be callse by services to return junk
 
-    void init(unsigned int total);
-    void processYear(); // итерация по всем категориям ресурсов - что перешло из категорию в категорию
-public:
+	void init(unsigned int total);
+	void processYear(); // the process of year's changing of all resources' categories
 };
 
 

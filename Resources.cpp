@@ -5,58 +5,85 @@
 #include "Resources.h"
 #include "TheArk.h"
 #include "TechnicalService.h"
+#include <vector>
+
+Resource::Resource(unsigned int total) : amount(total) 
+{
+
+}
+
+void Resource::GetResource(unsigned int isReturned) {
+	this->amount += isReturned;
+}
+
+void Resource::GiveResource(unsigned int isNeeded) {
+	this->amount -= isNeeded;
+}
+
+unsigned int Resource::ReturnTotal() const {
+	return this->amount;
+}
 
 unsigned int Resources::getComponents() const {
-    return components;
+	return components;
 }
 
 unsigned int Resources::getRefuse() const {
-    return refuse;
+	return refuse;
 }
 
 unsigned int Resources::getConsumables() const {
-    return consumables;
+	return consumables;
 }
 
 unsigned int Resources::getUsed() const {
-    return used;
+	return used;
 }
 
 unsigned int Resources::getJunk() const {
-    return junk;
+	return junk;
 }
 
-Resources::Resources() : consumables(0), components(0), used(0), junk(0), refuse(0), componentsToUsed(0), usedToJunk(0)
+Resources::Resources() : consumables(0), components(0), used_by_services({0, 0, 0, 0, 0, 0}), used(0), junk(0), refuse(0)
 {
 
 }
 
 void Resources::processYear() {
-
+	consumables *= efficiencyConsumablesToComponents()/100;
+	components  *= efficiencyConsumablesToComponents()/100;
+	consumables *= efficiencyJunkToConsumables()/100;
+	junk        *= efficiencyJunkToConsumables()/100;
+	junk        *= efficiencyJunkToRefuse()/100;
+	refuse      *= efficiencyJunkToRefuse()/100;	
 }
 
-void Resources::setComponentsToUsed(unsigned int current_usage) {
-    componentsToUsed = current_usage;
+void Resources::setComponentsToUsed(unsigned int current_usage, int id) {
+	used_by_services[id] += current_usage;
+	components           -= current_usage;
+	used                 += current_usage;
 }
 
-void Resources::setUsedToJunk(unsigned int current_broken) {
-    usedToJunk = current_broken;
+void Resources::setUsedToJunk(unsigned int current_broken, int id) {
+	junk                 += current_broken;
+	used_by_services[id] -= current_broken;
+	used                 -= current_broken;
 }
 
-double Resources::efficiencyConsumablesToComponents() {
-    return TheArk::get_instance()->getTechnicalService()->efficiencyConsumablesToComponents();
+double Resources::efficiencyConsumablesToComponents() const {
+	return TheArk::get_instance()->getTechnicalService()->efficiencyConsumablesToComponents();
 }
 
-double Resources::efficiencyJunkToConsumables() {
-    return TheArk::get_instance()->getTechnicalService()->efficiencyJunkToConsumables();
+double Resources::efficiencyJunkToConsumables() const {
+	return TheArk::get_instance()->getTechnicalService()->efficiencyJunkToConsumables();
 }
 
-double Resources::efficiencyJunkToRefuse() {
-    return TheArk::get_instance()->getTechnicalService()->efficiencyJunkToRefuse();
+double Resources::efficiencyJunkToRefuse() const {
+	return TheArk::get_instance()->getTechnicalService()->efficiencyJunkToRefuse();
 }
 
 void Resources::init(unsigned int total) {
-    consumables = 0.3 * total;
-    components = 0.2 * total;
-    used = total - consumables - components;
+	Resource GeneralResources(total);
+	consumables = 0.3 * total;
+	components  = 0.2 * total;
 }
