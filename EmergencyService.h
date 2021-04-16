@@ -25,7 +25,7 @@ public:
     EmergencyService();
 
     double accident_propability();
-    unsigned int damage_factor();
+    double damage_factor();
     void determine_severity(Service* s);
     void create_accident(Service* s);
     void process_accident(AccidentSeverity as) override;    // каждая служба должна уметь в своих терминах обработать переданную ей аварию
