@@ -7,7 +7,6 @@
 SocialService::SocialService()
 {
     this->efficiency_percentage = 15;
-    this->staff.resize(0);
     this->n_years_of_education = 5; // <- все изначально учатся 5 лет
     this->n_staff_we_want = 50; // <- на всякий случай, вдруг что поломается
     this->update_n_staff_we_want();
