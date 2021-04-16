@@ -7,20 +7,20 @@
 #include "TechnicalService.h"
 #include <vector>
 
-Resource::Resource(unsigned int total) : amount(total) 
+Resources::Resource::Resource(unsigned int total) : amount(total) 
 {
 
 }
 
-void Resource::GetResource(unsigned int isReturned) {
+void Resources::Resource::GetResource(unsigned int isReturned) {
 	this->amount += isReturned;
 }
 
-void Resource::GiveResource(unsigned int isNeeded) {
+void Resources::Resource::GiveResource(unsigned int isNeeded) {
 	this->amount -= isNeeded;
 }
 
-unsigned int Resource::ReturnTotal() const {
+unsigned int Resources::Resource::ReturnTotal() const {
 	return this->amount;
 }
 
@@ -68,6 +68,12 @@ void Resources::setUsedToJunk(unsigned int current_broken, int id) {
 	junk                 += current_broken;
 	used_by_services[id] -= current_broken;
 	used                 -= current_broken;
+}
+
+void Resources::setUsedToConsumables(unsigned int current_created, int id) {
+	consumables          += current_created;
+	used_by_services[id] -= current_created;
+	used                 -= current_created;
 }
 
 double Resources::efficiencyConsumablesToComponents() const {
