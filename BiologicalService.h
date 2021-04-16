@@ -9,6 +9,7 @@
 
 class BiologicalService : public Service {
 private:
+    int BioState;
 public:
     BiologicalService();
 
