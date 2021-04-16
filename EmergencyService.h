@@ -6,6 +6,7 @@
 #define THE_ARK_EMERGENCYSERVICE_H
 
 #include <ctime>
+#include <cmath>
 #include "Service.h"
 #include "TheArk.h"
 #include "MedicalService.h"
