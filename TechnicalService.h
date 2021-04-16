@@ -6,9 +6,17 @@
 #define THE_ARK_TECHNICALSERVICE_H
 
 #include "Service.h"
+#include "Human.h"
+#include <vector>
 
 class TechnicalService : public Service {
 private:
+    double totalState;                // общее состояние корабля
+    double engineState;               // состояние двигателя
+    double protectionState;           // состояние защиты корабля
+    double serviceState;           // состояние службы
+    unsigned int resources;        // количество нужных ресурсов в процентах
+
 public:
     TechnicalService();
 
@@ -20,6 +28,14 @@ public:
     double efficiencyConsumablesToComponents();     // как быстро расходники перерабатываются в компоненты
     double efficiencyJunkToConsumables();           // как быстро хлам перерабатываются в расходники
     double efficiencyJunkToRefuse();                // как быстро хлам перерабатываются в отходы
+
+    virtual unsigned int getResourceDemand() override;           // сколько ресурсов требуется
+    virtual unsigned int getResourcePriority() override;         // с каким приоритетом служба будет требовать ресурсы
+    virtual unsigned int getStaffDemand() override;              // сколько людей требуется
+    virtual unsigned int getStaffPriority() override;            // с каким приоритетом слуюба будет требовать людей
+    virtual bool changeStaff (int delta) override;               // сколько людей добавили или забрали (в т.ч. смертность)
+    virtual bool changeResources(int delta) override;            // сколько ресурсов добавили или забрали (в т.ч. износ)
+
 };
 
 
