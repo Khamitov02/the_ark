@@ -11,13 +11,13 @@ BiologicalService::BiologicalService()
 
 void BiologicalService::process_accident(AccidentSeverity as)
 {
-
+// Принимаем параметр тяжести и сразу обрабатываем - пока не реализовано
 }
 
 double BiologicalService::getState() {
-    return 100;
+    return BioState;  // передаём состояние в процентах
 }
 
 void BiologicalService::setState(double s) {
-
+      BioState = s;   // инициализируем состояние
 }
