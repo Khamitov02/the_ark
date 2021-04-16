@@ -53,6 +53,7 @@ public:
     NavigationService* getNavigationService();
     EmergencyService* getEmergencyService();
     SocialService* getSocialService();
+    std::array<Service*, 6>& getServices();
     Population *getPopulation() const;
     Resources *getResources() const;
 
