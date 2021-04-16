@@ -153,3 +153,8 @@ Population *TheArk::getPopulation() const {
 Resources *TheArk::getResources() const {
     return resources;
 }
+
+std::array<Service*, 6>& TheArk::getServices()
+{
+    return services;
+}
