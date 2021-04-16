@@ -29,7 +29,6 @@ private:
     unsigned int n_years_of_education;
     unsigned int suicide_counter;
 
-    vector<Human*> staff;
     priority_queue<Human*, vector<Human*>, ComparePersonsByMentalHealth> clients;
 
     unsigned int count_all_accident_severity = 0; // полное число поступивих чрезвычайных событий

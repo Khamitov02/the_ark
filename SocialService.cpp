@@ -19,10 +19,10 @@ void SocialService::process_accident(AccidentSeverity as) {
     const unsigned int CHANGE_MENTAL_HEALTH = 1; // элементарное изменение ментального здоровья в следствии каких-либо чрезвычайных событий
     const unsigned int CHANGE_PHYSICLE_HEALTH = 1; // элементарное изменение физического здоровья в следствии каких-либо чрезвычайных событий
 
-    const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH_LIGHT = 80; // вероятность повышения ментального здоровья в следствии чрезвычайного события LIGHT
+    const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH_LIGHT = 80; // вероятность повышения ментального здоровья в следствии чрезвычайного события NEGLIGIBLE
 
-    const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH_NEGLIGIBLE = 40; // вероятность повышения ментального здоровья в следствии чрезвычайных события NEGLIGIBLE
-    const unsigned int PROBABILITY_CHANGE_PHYSICLE_HEALTH_NEGLIGIBLE = 40; // вероятность уменьшения физического здоровья в следствии чрезвычайных события NEGLIGIBLE
+    const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH_NEGLIGIBLE = 40; // вероятность повышения ментального здоровья в следствии чрезвычайных события LIGHT
+    const unsigned int PROBABILITY_CHANGE_PHYSICLE_HEALTH_NEGLIGIBLE = 40; // вероятность уменьшения физического здоровья в следствии чрезвычайных события LIGHT
 
     const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH = 80; // вероятность уменьшения ментального здоровья в следствии чрезвычайного событий:
     // MEDIUM, SEVERE, DISASTROUS, CATASTROPHIC
@@ -34,7 +34,7 @@ void SocialService::process_accident(AccidentSeverity as) {
 
     // в самом начале выясняю какое чрезывачайное событие случилось
 
-    if (AccidentSeverity::LIGHT == as) {
+    if (AccidentSeverity::NEGLIGIBLE == as) {
         // логика: произошло чрезывачайное событие, которое людям удалось легко и успешно решить,
         // благодаря этому у каждого из них возрастает моральное здоровье с 70 % вероятностью на 2 условные единицы
         // (вероятность увеличения морального здоровья и само измененое могут корректироваться в константах функции)
@@ -51,7 +51,7 @@ void SocialService::process_accident(AccidentSeverity as) {
         count_resolved_accident_severity++;
     }
 
-    else if (AccidentSeverity::NEGLIGIBLE == as) {
+    else if (AccidentSeverity::LIGHT == as) {
         // логика: произошло чрезвычайное событие, которое людям удалось успешно решить, но уже не так легко, как в предыдущем случае
         // благодаря этому у некоторых из них может увеличиться моральное здоровье на заданую константу, так как человек молодец, потому что смог решить проблему
         // некоторые же люди же теряют моральное здоровье и физическое, так как чрезвычайное событие как-то негативно на них повлияло

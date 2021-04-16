@@ -5,15 +5,21 @@
 #ifndef THE_ARK_SERVICE_H
 #define THE_ARK_SERVICE_H
 
+#include <list>
+#include "Population.h"
+
+using std::list;
+
 enum AccidentSeverity {
-    // давайте обусловимся оуенивать порядок серьёзности события, порядком в этом enum, критика принимается (WoDees)
-    LIGHT,
+    // давайте обусловимся оуенивать порядок серьёзности события, порядком в этом enum
     NEGLIGIBLE,
+    LIGHT,
     MEDIUM,
     SEVERE,
     DISASTROUS,
     CATASTROPHIC
 };
+
 
 class Service {
 private:
@@ -22,6 +28,8 @@ private:
 
     unsigned int resources; // количество задействованных ресурсов
     // сюда можно добавить руководителя службы
+protected:
+    list <Human*> staff;
 public:
     Service();
 
