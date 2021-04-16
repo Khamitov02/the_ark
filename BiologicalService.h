@@ -9,13 +9,26 @@
 
 class BiologicalService : public Service {
 private:
+    
+    double BioState;
+
 public:
+    
     BiologicalService();
 
-    void process_accident(AccidentSeverity as) override;    // каждая служба должна уметь в своих терминах обработать переданную ей аварию
-    void process_year() override {};                       // если у службы есть какая-то личная жизнь, она может заниматься ей тут
-    double getState() override;                             // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
-    void setState(double s) override;                       // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
+    void process_accident(AccidentSeverity as) override
+    {
+        
+    };                                // Принимаем параметр тяжести и сразу обрабатываем - пока не реализовано
+    void process_year() override {};      // если у службы есть какая-то личная жизнь, она может заниматься ей тут
+    double getState() override
+    {
+        return BioState;
+    };                             // передаём состояние в процентах
+    void setState(double s) override
+    {
+        BioState = s;
+    };                       // инициализируем состояние
 };
 
 
