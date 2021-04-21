@@ -5,9 +5,13 @@
 #ifndef THE_ARK_POPULATION_H
 #define THE_ARK_POPULATION_H
 #include <vector>
+#include <list>
+#include <array>
 #include "Human.h"
 
 using std::vector;
+using std::list;
+using std::array;
 
 class Population {
 private:
@@ -22,7 +26,7 @@ private:
     double deathRateAdults();
     double deathRateOldmen();
 public:
-    vector<Human> people;
+    array<list<Human>, 7> people;
 
     Population();
     unsigned int get_number_of_people() const;
