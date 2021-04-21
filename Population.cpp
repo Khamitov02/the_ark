@@ -30,7 +30,6 @@ unsigned int Population::getTotal() const {
 }
 
 void Population::processYear() {
-    c1 = 0;
     int HisAge;
     adults = 0;
     oldmen = 0;
