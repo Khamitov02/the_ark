@@ -7,34 +7,47 @@
 #include "Population.h"
 #include "BiologicalService.h"
 #include "SocialService.h"
+#include <iostream>
 
 MedicalService::MedicalService() : retirementAge(65), ChildrenDeath(0.0001), AdultDeath(0.001), OldDeath(0.01),
-                                   State(100) {}
+                                   State(100), n_engineers(50), n_scientists(25), resources(1000) {}
 
 void MedicalService::process_accident(AccidentSeverity as) {
 
 }
 
 void MedicalService::process_year() {
-    Old.sort();
-    Adult.sort();
-    Children.sort();
-    unsigned int NumbOld = TheArk::get_instance()->getPopulation()->getOldmen();
-    unsigned int NumbAd = TheArk::get_instance()->getPopulation()->getAdults();
-    unsigned int NumbCh = TheArk::get_instance()->getPopulation()->getChildren();
-
-    for (; NumbOld != Old.size();) {
-        if (NumbOld > Old.size()) Old.push_back(10 + rand() % 70);
-        if (NumbOld < Old.size()) Old.pop_back();
+    auto p = &TheArk::get_instance()->getPopulation()->people;
+    unsigned int oll_health = 0, IlChild = 0, IlAd = 0, IlOld = 0;
+    unsigned int HIlChild = 0, HIlAd = 0, HIlOld = 0;
+    for (auto i = p->begin(); i != p->end(); ++i) {
+        for (auto it = i->begin(); it != i->end(); ++it) {
+            oll_health += it->getPhysicalHealth();
+            if ((it->getPhysicalHealth() < 60) &&
+                (it->getAge() < TheArk::get_instance()->getSocialService()->borderChildrenToAdults())) {
+                if (it->getPhysicalHealth() < 30)
+                    HIlChild++;
+                IlChild++;
+            }
+            if ((it->getPhysicalHealth() < 60) &&
+                (it->getAge() >= TheArk::get_instance()->getSocialService()->borderChildrenToAdults()) &&
+                (it->getAge() <= borderAdultsToOldmen())) {
+                if (it->getPhysicalHealth() < 30)
+                    HIlAd++;
+                IlAd++;
+            }
+            if ((it->getPhysicalHealth() < 60) &&
+                (it->getAge() > borderAdultsToOldmen())) {
+                if (it->getPhysicalHealth() < 30)
+                    HIlOld++;
+                IlOld++;
+            }
+        }
     }
-    for (; NumbAd != Adult.size();) {
-        if (NumbAd > Adult.size()) Adult.push_back(30 + rand() % 70);
-        if (NumbAd < Adult.size()) Adult.pop_back();
-    }
-    for (; NumbCh != Children.size();) {
-        if (NumbCh > Children.size()) Children.push_back(40 + rand() % 60);
-        if (NumbCh < Children.size()) Children.pop_back();
-    }
+    State = 1.0 * oll_health / TheArk::get_instance()->getPopulation()->getTotal();
+    ChildrenDeath = 1.0 * HIlChild / TheArk::get_instance()->getPopulation()->getChildren();
+    AdultDeath = 1.0 * HIlAd / TheArk::get_instance()->getPopulation()->getAdults();
+    OldDeath = 1.0 * HIlOld / TheArk::get_instance()->getPopulation()->getOldmen();
 }
 
 unsigned int MedicalService::borderAdultsToOldmen() {
@@ -42,27 +55,45 @@ unsigned int MedicalService::borderAdultsToOldmen() {
 }
 
 double MedicalService::deathRateChildren() {
-    return 0.0001;
+    return ChildrenDeath;
 }
 
 double MedicalService::deathRateAdult() {
-    return 0.001;
+    return AdultDeath;
 }
 
 double MedicalService::deathRateOldmen() {
-    return 0.01;
+    return OldDeath;
 }
 
 double MedicalService::getState() {
-    return 100;
+    return State;
 }
 
 void MedicalService::setState(double s) {
-    for (int i = 0; i < TheArk::get_instance()->getPopulation()->getOldmen(); i++)
-        Old.push_back(10 + rand() % 70);
-    for (int i = 0; i < TheArk::get_instance()->getPopulation()->getAdults(); i++)
-        Adult.push_back(20 + rand() % 80);
-    for (int i = 0; i < TheArk::get_instance()->getPopulation()->getChildren(); i++)
-        Children.push_back(40 + rand() % 60);
+    State = s;
+}
 
+unsigned int MedicalService::getResourceDemand() {
+    return 500;
+}
+
+unsigned int MedicalService::getResourcePriority() {
+    return 3;
+}
+
+unsigned int MedicalService::getStaffDemand() {
+    return 10;
+}
+
+unsigned int MedicalService::getStaffPriority() {
+    return 3;
+}
+
+bool MedicalService::changeStaff(int delta) {
+    return true;
+}
+
+bool MedicalService::changeResources(int delta) {
+    return true;
 }
