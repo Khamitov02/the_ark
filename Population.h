@@ -18,6 +18,7 @@ private:
     unsigned int children;
     unsigned int adults;
     unsigned int oldmen;
+    unsigned int c1;
 
     unsigned int borderChildrenToAdults();
     unsigned int borderAdultsToOldmen();
