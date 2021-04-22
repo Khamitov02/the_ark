@@ -26,16 +26,20 @@ private:
     double deathRateChildren();
     double deathRateAdults();
     double deathRateOldmen();
-public:
-    //array<list<Human>, 7> people;
+
+    array<list<shared_ptr<Human>>, 7> classifications_of_humans;
     list<shared_ptr<Human>> people;
 
+public:
     Population();
     unsigned int get_number_of_people() const;
     unsigned int getChildren() const;
     unsigned int getAdults() const;
     unsigned int getOldmen() const;
     unsigned int getTotal() const;
+
+    list<shared_ptr<Human>>& getPeople();
+    array<list<shared_ptr<Human>>, 7>& getAllClassification();
 
     void init(unsigned int total);
     void processYear(); // итерация по всем категориям населения - кто перешел из категорию в категорию, обработка смертности

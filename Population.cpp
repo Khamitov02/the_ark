@@ -41,7 +41,7 @@ void Population::processYear() {
         if (HisAge >= borderChildrenToAdults() && HisAge < borderAdultsToOldmen()) adults++;
         if (HisAge >= borderAdultsToOldmen() && HisAge <= 100) oldmen++;
         (*it)->age++;
-        if (HisAge > 100 || (*it)->isAlive() == false){
+        if (HisAge > 100 || !(*it)->isAlive()){
             people.erase(it);
         }
     }
@@ -99,6 +99,15 @@ void Population::init(unsigned int total) {
         auto ptr = shared_ptr<Human>(person);
         people.push_back(ptr);
     }
+}
+
+list<shared_ptr<Human>>& Population::getPeople()
+{
+    return this->people;
+}
+array<list<shared_ptr<Human>>, 7>& Population::getAllClassification()
+{
+     return this->classifications_of_humans;
 }
 
 

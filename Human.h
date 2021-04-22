@@ -4,13 +4,7 @@
 
 #ifndef THE_ARK_HUMAN_H
 #define THE_ARK_HUMAN_H
-
-enum Profession {
-    UNEMPLOYED,
-    WORKER,
-    SCIENTIST,
-    UNDEFINED
-};
+#include "Enums.cpp"
 
 class Human {
 private:

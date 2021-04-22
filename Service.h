@@ -7,19 +7,8 @@
 
 #include <list>
 #include "Population.h"
-
+#include "Enums.cpp"
 using std::list;
-
-enum AccidentSeverity {
-    // давайте обусловимся оуенивать порядок серьёзности события, порядком в этом enum
-    NEGLIGIBLE,
-    LIGHT,
-    MEDIUM,
-    SEVERE,
-    DISASTROUS,
-    CATASTROPHIC
-};
-
 
 class Service {
 private:
@@ -42,6 +31,7 @@ public:
     virtual void process_year() = 0;                        // если у службы есть какая-то личная жизнь, она может заниматься ей тут
     virtual double getState() = 0;                          // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
     virtual void setState(double s) = 0;                    // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
+    virtual unsigned int get_staff_request() = 0;
 
     // стандартное взаимодействие служб с остальным кодом, можно перекрывать, можно нет
     virtual unsigned int getResourceDemand();           // сколько ресурсов требуется

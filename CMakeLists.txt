@@ -17,4 +17,13 @@ add_executable(the_ark
         NavigationService.cpp
         NavigationService.h
         EmergencyService.cpp
-        EmergencyService.h SocialService.cpp SocialService.h Population.cpp Population.h Resources.cpp Resources.h Human.cpp Human.h)
+        EmergencyService.h
+        SocialService.cpp
+        SocialService.h
+        Population.cpp
+        Population.h
+        Resources.cpp
+        Resources.h
+        Human.cpp
+        Human.h
+        Enums.cpp)
