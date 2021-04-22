@@ -5,10 +5,11 @@
 #ifndef THE_ARK_POPULATION_H
 #define THE_ARK_POPULATION_H
 #include <vector>
+#include <memory>
 #include <list>
 #include <array>
 #include "Human.h"
-
+using std::shared_ptr;
 using std::vector;
 using std::list;
 using std::array;
@@ -26,7 +27,8 @@ private:
     double deathRateAdults();
     double deathRateOldmen();
 public:
-    array<list<Human>, 7> people;
+    //array<list<Human>, 7> people;
+    list<shared_ptr<Human>> people;
 
     Population();
     unsigned int get_number_of_people() const;
