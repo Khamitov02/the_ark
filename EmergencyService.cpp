@@ -14,8 +14,8 @@ double EmergencyService::accident_propability()
     return 1 / pow(3, 3 * s);
 }
 
-//от 1 до 100б чем хуже состояние чс, тем больше коэффициент - больше ущерб от аварии
-unsigned int EmergencyService::damage_factor()
+//от 1 до 100 чем хуже состояние чс, тем больше коэффициент - больше ущерб от аварии
+double EmergencyService::damage_factor()
 {
     if (this->getState() != 0)
         return 100 / (this->getState());

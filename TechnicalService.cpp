@@ -45,15 +45,25 @@ void TechnicalService::setState(double s)
 }
 
 unsigned int TechnicalService::getResourceDemand() {
-
+    return 50;
 }
 
-unsigned int TechnicalService::getResourcePriority() {}
+unsigned int TechnicalService::getResourcePriority() {
+    return 1;
+}
 
-unsigned int TechnicalService::getStaffDemand() {}
+unsigned int TechnicalService::getStaffDemand() {
+    return 10;
+}
 
-unsigned int TechnicalService::getStaffPriority() {}
+unsigned int TechnicalService::getStaffPriority() {
+    return 1;
+}
 
-bool TechnicalService::changeStaff(int delta) {}
+bool TechnicalService::changeStaff(int delta) {
+    return true;
+}
 
-bool TechnicalService::changeResources(int delta) {}
+bool TechnicalService::changeResources(int delta) {
+    return true;
+}
