@@ -21,14 +21,14 @@ Human::Human(unsigned int mentalStability, unsigned int PhysicalHealth)
 
     this->physical_health = PhysicalHealth;
     this->moral_health = 100;
-    this->year_of_education = -1;
-
+    this->year_of_education = Education::NotStudying;
 }
 
 Human::Human(unsigned int common_status_of_the_ark):
         Human(10, 100){
     this->physical_health *= (common_status_of_the_ark / 100);
 }
+
 unsigned int Human::getMentalStability() const {
     return MENTAL_STABILITY;
 }
@@ -53,7 +53,7 @@ unsigned int Human::getAmountOfBlackAccidents() const {
     return amount_of_black_accidents;
 }
 
-unsigned int Human::getYearOfEducation() const {
+Education Human::getYearOfEducation() const {
     return year_of_education;
 }
 
@@ -69,12 +69,11 @@ void Human::setAmountOfBlackAccidents(unsigned int amountOfBlackAccidents) {
     amount_of_black_accidents = amountOfBlackAccidents;
 }
 
-
-void Human::setYearOfEducation(unsigned int yearOfEducation) {
+void Human::setYearOfEducation(Education yearOfEducation) {
     year_of_education = yearOfEducation;
 }
 
-void Human::setAge(int Age) {
+void Human::setAge(unsigned int Age) {
     this->age = Age;
 }
 

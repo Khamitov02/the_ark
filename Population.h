@@ -27,12 +27,14 @@ private:
     double deathRateAdults();
     double deathRateOldmen();
 
+    void native_death();
+    void check_dead_people(); // пробежались по всем всем листам и попнули умерших
+
     array<list<shared_ptr<Human>>, 7> classifications_of_humans;
     list<shared_ptr<Human>> people;
 
 public:
     Population();
-    unsigned int get_number_of_people() const;
     unsigned int getChildren() const;
     unsigned int getAdults() const;
     unsigned int getOldmen() const;

@@ -17,9 +17,9 @@ private:
     // если их больше, чем моральная стабильность, то моральное здоровье человека уменьшается
     // <- это поле контролирует СС
 
-    Profession type_as_a_worker; // возможный тип профессии можно увидеть в enum, в начале файла
+    Profession type_as_a_worker; // возможный тип профессии можно увидеть в соответсвующем enum
 
-    unsigned int year_of_education; // 0 - не учится
+    Education year_of_education; // описано в соответсвующем enum
     // <- это поле контролирует СС
 
     bool is_alive;
@@ -37,12 +37,12 @@ public:
     unsigned int getMoralHealth() const;
     Profession getTypeAsAWorker() const;
     unsigned int getAmountOfBlackAccidents() const;
-    unsigned int getYearOfEducation() const;
+    Education getYearOfEducation() const;
     bool isAlive() const;
     bool isAbleToWork() const;
     bool isAbleToStudy() const;
 
-    void setAge(int Age);
+    void setAge(unsigned int Age);
     void setPhysicalHealth(unsigned int physicalHealth);
     void setMoralHealth(unsigned int moralHealth);
     void setTypeAsAWorker(Profession typeAsAWorker);
@@ -50,9 +50,8 @@ public:
     void setIsAbleToWork(bool isAbleToWork);
     void setIsAbleToStudy(bool isAbleToStudy);
     void setAmountOfBlackAccidents(unsigned int amountOfBlackAccidents);
-    void setYearOfEducation(unsigned int yearOfEducation);
+    void setYearOfEducation(Education yearOfEducation);
 
-    friend class Population;
 };
 
 
