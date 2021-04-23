@@ -20,8 +20,6 @@ private:
     double ChildrenDeath;
     double AdultDeath;
     double OldDeath;
-protected:
-    list<Human *> staff;
 public:
     MedicalService();
 
