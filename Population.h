@@ -23,11 +23,12 @@ private:
     unsigned int borderChildrenToAdults();
     unsigned int borderAdultsToOldmen();
 
-    unsigned int getMedicalStaff();
+    unsigned int number_staff(Classification_of_humans serves);
 
     double deathRateChildren();
     double deathRateAdults();
     double deathRateOldmen();
+
 
     void native_death();
     void check_dead_people(); // пробежались по всем всем листам и попнули умерших

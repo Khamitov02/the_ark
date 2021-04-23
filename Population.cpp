@@ -6,6 +6,10 @@
 #include "TheArk.h"
 #include "MedicalService.h"
 #include "SocialService.h"
+#include "TechnicalService.h"
+#include "BiologicalService.h"
+#include "EmergencyService.h"
+#include "NavigationService.h"
 #include <cstdlib>
 
 Population::Population() : children(0), adults(0), oldmen(0){}
@@ -35,6 +39,29 @@ unsigned int Population::borderAdultsToOldmen()
 {
     return TheArk::get_instance()->getMedicalService()->borderAdultsToOldmen();
 }
+
+
+unsigned int number_staff(Classification_of_humans serves)
+{
+    switch(serves){
+        case Technical_Service:
+            return TheArk::get_instance()->getTechnicalService()->getNStaff();
+        case Biological_Service:
+            return TheArk::get_instance()->getBiologicalService()->getNStaff();
+        case Medical_Service:
+            return TheArk::get_instance()->getMedicalService()->getNStaff();
+        case Navigation_Service:
+            return TheArk::get_instance()->getNavigationService()->getNStaff();
+        case Emergency_Service:
+            return TheArk::get_instance()->getEmergencyService()->getNStaff();
+        case Social_Service:
+            return TheArk::get_instance()->getSocialService()->getNStaff();
+        default:
+            return 0;
+    }
+
+}
+
 
 double Population::deathRateChildren()
 {
@@ -146,7 +173,7 @@ void Population::check_dead_people() {
         {
             if ((*it)->isAlive() == false || (*it)->getAge() >= this->borderAdultsToOldmen() )
             {
-                //(*it)->setTypeAsWorker();
+                (*it)->setTypeAsAWorker(UNDEFINED);
                 classification.erase(it);
             }
         }
@@ -177,14 +204,26 @@ void Population::init(unsigned int total) {
         people.push_back(ptr);
     }
     // далее идет сортировка по необходимым классификациям
+    int staffs = 0, o = 0;
 
-   /* for(int i = 0; i <= classifications_of_humans.size(); i++){
-        switch(i){
-            case 1:
-                classifications_of_humans[i]. = TheArk::get_instance()->getMedicalService()->getNStaff();
+
+   for(int i = 0; i < classifications_of_humans.size(); i++){
+       staffs = number_staff(Classification_of_humans(i));
+       o = 0;
+       auto iter = people.begin();
+
+        while(o!= staffs && iter != people.end() ){
+            if((*iter)->getAge() > this->borderChildrenToAdults() && (*iter)->getAge() < this->borderAdultsToOldmen()){
+                if((*iter)->getTypeAsAWorker() == UNDEFINED || (*iter)->getTypeAsAWorker() == UNEMPLOYED){
+                    classifications_of_humans[i].push_back(*iter);
+                    (*iter)->setTypeAsAWorker(WORKER);
+                    o++;
+                }
+            }
+            iter++;
 
         }
-    }*/
+    }
 }
 
 
