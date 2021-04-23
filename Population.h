@@ -31,7 +31,7 @@ private:
 
 
     void native_death();
-    void check_dead_people(); // пробежались по всем всем листам и попнули умерших
+    void check_dead_people_is_classifications(); // пробежались по всем всем листам и попнули умерших
 
     array<list<shared_ptr<Human>>, 7> classifications_of_humans;
     list<shared_ptr<Human>> people;
