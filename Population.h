@@ -23,6 +23,8 @@ private:
     unsigned int borderChildrenToAdults();
     unsigned int borderAdultsToOldmen();
 
+    unsigned int getMedicalStaff();
+
     double deathRateChildren();
     double deathRateAdults();
     double deathRateOldmen();
@@ -32,6 +34,8 @@ private:
 
     array<list<shared_ptr<Human>>, 7> classifications_of_humans;
     list<shared_ptr<Human>> people;
+    list<shared_ptr<Human>> MedicalService;
+
 
 public:
     Population();
