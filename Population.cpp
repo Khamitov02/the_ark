@@ -114,9 +114,16 @@ void Population::processYear() {
             if ((rand()%((unsigned int)(1 / this->deathRateOldmen()))) < 1)
                 (*it)->setIsAlive(false);
         }
+
+        if((*it)->getPhysicalHealth() <= 10 || (*it)->getMoralHealth() <=1){
+            (*it)->setIsAlive(false);
+        }
+
         if(HisAge > 100 || (*it)->isAlive() == false){
             people.erase(it);
         }
+
+
         (*it)->setAge(HisAge + 1);
 
     }
@@ -131,7 +138,7 @@ void Population::processYear() {
 
     //конец обработки
 }
-
+/*
 void Population::native_death() {
     for (shared_ptr<Human>& person : this->people)
     {
@@ -158,15 +165,8 @@ void Population::native_death() {
         }
     }
 }
-
+*/
 void Population::check_dead_people() {
-    /*for (auto it = this->people.begin(); it != this->people.end(); it++)
-    {
-        if (!(*it)->isAlive())
-        {
-            this->people.erase(it);
-        }
-    }*/
     for (list<shared_ptr<Human>>& classification: this->classifications_of_humans)
     {
         for (auto it = classification.begin(); it != classification.end(); it++)
