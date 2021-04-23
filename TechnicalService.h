@@ -8,6 +8,7 @@
 #include "Service.h"
 #include "Human.h"
 #include <vector>
+#include "TheArk.h"
 
 class TechnicalService : public Service {
 private:
@@ -28,6 +29,7 @@ public:
     double getState() override;                             // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
     void setState(double s) override;                       // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
     void emergencyRepair ();
+    void kill(int victims);                         // убивает людей
 
     double efficiencyConsumablesToComponents();     // как быстро расходники перерабатываются в компоненты
     double efficiencyJunkToConsumables();           // как быстро хлам перерабатываются в расходники
@@ -37,6 +39,7 @@ public:
     virtual unsigned int getResourcePriority() override;         // с каким приоритетом служба будет требовать ресурсы
     virtual unsigned int getStaffDemand() override;              // сколько людей требуется
     virtual unsigned int getStaffPriority() override;            // с каким приоритетом слуюба будет требовать людей
+
     virtual bool changeStaff (int delta) override;               // сколько людей добавили или забрали (в т.ч. смертность)
     virtual bool changeResources(int delta) override;            // сколько ресурсов добавили или забрали (в т.ч. износ)
 
