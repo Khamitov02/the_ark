@@ -15,12 +15,13 @@ TechnicalService::TechnicalService()
 // идет "корректировка" состояния корабля в зависимости от степени аварии
 void TechnicalService::process_accident(AccidentSeverity as)
 {
-    protectionState -= as * 7.8;
+    protectionState -= as * 6.8; //подумать коэф
     engineState -= as * (100 - protectionState) * 0.3;
     totalState = 0.5 * (0.8 * protectionState + 1.2 * engineState);
     if (protectionState < 15)
         emergencyRepair();
     // kill some people
+    staff -= as * staff / 20;
 }
 
 // считает и возвращает состояние службы в зависимости от количества работающих людей и
@@ -34,7 +35,7 @@ void TechnicalService::emergencyRepair()
     protectionState += repairing;
     resources -= int(repairing / 100) * maxResources;
     // убить много людей, так как экстренная и масштабная починка
-
+    staff = int(0.9 * staff);
 }
 
 void TechnicalService::process_year()
@@ -96,9 +97,11 @@ unsigned int TechnicalService::getStaffPriority() {
 }
 
 bool TechnicalService::changeStaff(int delta) {
+    staff += delta;
     return true;
 }
 
 bool TechnicalService::changeResources(int delta) {
+    resources += delta;
     return true;
 }
