@@ -37,7 +37,7 @@ void SocialService::process_accident(AccidentSeverity as) {
         // логика: произошло чрезывачайное событие, которое людям удалось легко и успешно решить,
         // благодаря этому у каждого из них возрастает моральное здоровье с 70 % вероятностью на 2 условные единицы
         // (вероятность увеличения морального здоровья и само измененое могут корректироваться в константах функции)
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
         {
             if (person->isAlive()) {
                 if (person->getMoralHealth() != 100 && person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -54,7 +54,7 @@ void SocialService::process_accident(AccidentSeverity as) {
         // логика: произошло чрезвычайное событие, которое людям удалось успешно решить, но уже не так легко, как в предыдущем случае
         // благодаря этому у некоторых из них может увеличиться моральное здоровье на заданую константу, так как человек молодец, потому что смог решить проблему
         // некоторые же люди же теряют моральное здоровье и физическое, так как чрезвычайное событие как-то негативно на них повлияло
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
         {
             if (person->isAlive()) {
                 if ((rand() % 2) == 0) {
@@ -85,7 +85,7 @@ void SocialService::process_accident(AccidentSeverity as) {
     else if (AccidentSeverity::MEDIUM == as) {
         // логика: чрезвычайное событие в следствии, которого удасться избежать человеческих потерь
         // (в следствии какких-либо психологических факторов), но будут значительные психологические потери
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
         {
             if (person->isAlive()) {
                 if (person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -108,7 +108,7 @@ void SocialService::process_accident(AccidentSeverity as) {
         // логика: серьёзное чрезвычайное событие: c вероятностью 70 % его удасться успешно решить,
         // но могут быть маленькие человечекие потери (в следствии какких-либо психологических факторов) и психологические потери
         if ((rand() % 100) <= 70) {
-            for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+            for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
             {
                 if (person->isAlive()) {
                     if (person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -127,7 +127,7 @@ void SocialService::process_accident(AccidentSeverity as) {
             count_resolved_accident_severity++;
         }
         else {
-            for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+            for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
             {
                 if (person->isAlive()) {
                     if (person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -146,7 +146,7 @@ void SocialService::process_accident(AccidentSeverity as) {
             count_unresolved_accident_severity++;
         }
         // иногда буду убивать уже убитых людей, но пока что ничего с страшного, позже логика усложнится
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople()) {
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople()) {
             if (rand() % 1000 < 2) {
                 person->setIsAlive(false);
             }
@@ -157,7 +157,7 @@ void SocialService::process_accident(AccidentSeverity as) {
         // логика: серьёзное чрезвычайное событие: c вероятностью 30 % его удасться успешно решить, но могут быть человечекие потери
         // (в следствии какких-либо психологических факторов) и психологические потери
         if ((rand() % 100) <= 30) {
-            for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+            for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
             {
                 if (person->isAlive()) {
                     if (person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -176,7 +176,7 @@ void SocialService::process_accident(AccidentSeverity as) {
             count_resolved_accident_severity++;
         }
         else {
-            for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+            for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
             {
                 if (person->isAlive()) {
                     if (person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -195,7 +195,7 @@ void SocialService::process_accident(AccidentSeverity as) {
             count_unresolved_accident_severity++;
         }
         // иногда буду убивать уже убитых людей, но пока что ничего с страшного, позже логика усложнится
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople()) {
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople()) {
             if (rand() % 1000 < 5) {
                 person->setIsAlive(false);
             }
@@ -205,7 +205,7 @@ void SocialService::process_accident(AccidentSeverity as) {
     else { // тут реализуется последний случай: AccidentSeverity::CATASTROPHIC == as
         // логика: самое серьёзное чрезвычайное событие: никогда его не удаться успешно решить, иногда, будут жертвы
         // (в следствии какких-либо психологических факторов), а так же большие психологические потери
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople())
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople())
         {
             if (person->isAlive()) {
                 if (person->getMoralHealth() > 3 && person->getPhysicalHealth() != 0){
@@ -221,7 +221,7 @@ void SocialService::process_accident(AccidentSeverity as) {
                 }
             }
         }
-        for (auto person : TheArk::get_instance()->getPopulation()->getPeople()) {
+        for (auto& person : TheArk::get_instance()->getPopulation()->getPeople()) {
             if (rand() % 1000 < 10) {
                 person->setIsAlive(false);
             }
@@ -244,7 +244,7 @@ double SocialService::getState() {
 void SocialService::setState(double s) {/*nothing to do*/}
 
 void SocialService::update_n_staff_we_want() {
-    this->n_staff_we_want = (TheArk::get_instance()->getPopulation()->getPeople().size() / (2 * this->efficiency_percentage)) + 10;
+    this->n_staff_we_want = (TheArk::get_instance()->getPopulation()->getPeople().size() / (2 * this->efficiency_percentage));
 }
 
 unsigned int SocialService::getResourceDemand() {
@@ -279,6 +279,7 @@ void SocialService::update_people(){
 // самый главный самый жырный метод
 void SocialService::process_year() {
     this->update_people();
+
     // так же тут будет обработка действий службы и тд и тп
 }
 

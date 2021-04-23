@@ -19,7 +19,6 @@ enum AccidentSeverity {
 enum Profession {
     UNEMPLOYED,
     WORKER,
-    SCIENTIST,
     UNDEFINED,
     STUDYING
 };
