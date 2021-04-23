@@ -12,31 +12,66 @@ TechnicalService::TechnicalService()
     serviceState = 100;
 }
 
+// идет "корректировка" состояния корабля в зависимости от степени аварии
 void TechnicalService::process_accident(AccidentSeverity as)
 {
     protectionState -= as * 7.8;
     engineState -= as * (100 - protectionState) * 0.3;
     totalState = 0.5 * (0.8 * protectionState + 1.2 * engineState);
+    if (protectionState < 15)
+        emergencyRepair();
+    // kill some people
 }
 
+// считает и возвращает состояние службы в зависимости от количества работающих людей и
 double TechnicalService::getState() {
-    serviceState = 50 * (double(staff.size()) / 250 + resources);
+    return serviceState;
+}
+
+void TechnicalService::emergencyRepair()
+{
+    double repairing = double(staff) / maxStaff * double(resources) / maxResources * 50;
+    protectionState += repairing;
+    resources -= int(repairing / 100) * maxResources;
+    // убить много людей, так как экстренная и масштабная починка
+
+}
+
+void TechnicalService::process_year()
+{
+    // обновление состояния службы
+    serviceState = 50 * (double(staff) / maxStaff + double(resources) / maxResources);
     if (serviceState > 100)
-        return 100;
-    else
-        return serviceState;
+        serviceState = 100;
+
+    // починка корабля
+    double repairing = double(staff) / maxStaff * double(resources) / maxResources * 10;
+    if (protectionState < 90)
+    {
+        protectionState += repairing;
+        resources -= int(repairing / 100) * maxResources;
+        // можно убить пару людей в зависимости от масштаба ремонта
+    }
+    if (protectionState > 60 && engineState < 90)
+    {
+        engineState += repairing;
+        resources -= int(repairing / 100) * maxResources;
+    }
+    // износ корабля
+    protectionState -= (101 - protectionState) * 0.05;
+    engineState -= (100 - protectionState) * 0.05;
 }
 
 double TechnicalService::efficiencyConsumablesToComponents() {
-    return 10;
+    return double(staff) / maxStaff * 0.9;
 }
 
 double TechnicalService::efficiencyJunkToConsumables() {
-    return 70;
+    return double(staff) / maxStaff * 0.7;
 }
 
 double TechnicalService::efficiencyJunkToRefuse() {
-    return 60;
+    return double(staff) / maxStaff * 0.5;
 }
 
 void TechnicalService::setState(double s)
