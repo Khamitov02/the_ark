@@ -62,21 +62,36 @@ array<list<shared_ptr<Human>>, 7>& Population::getAllClassification()
 
 void Population::processYear() {
 
-    this->native_death();
+    //this->native_death();
     this->check_dead_people();
 
     // далее идет обработка по возрасту
     unsigned int n_of_adults = 0;
     unsigned int n_of_oldmen = 0;
     unsigned int n_of_children = 0;
-    for (auto & it : people) {
-        if (it->getAge() < this->borderChildrenToAdults())
+    unsigned int HisAge = 0;
+    for (auto it = people.begin(); it != people.begin(); it++) {
+        HisAge = (*it)->getAge();
+        if (HisAge < this->borderChildrenToAdults()){
             n_of_children++;
-        if ((it->getAge() >= this->borderChildrenToAdults()) && (it->getAge() < borderAdultsToOldmen()))
+            if ((rand()%((unsigned int)(1 / this->deathRateChildren()))) < 1)
+                (*it)->setIsAlive(false);
+        }
+        if ((HisAge >= this->borderChildrenToAdults()) && (HisAge < borderAdultsToOldmen())){
             n_of_adults++;
-        if (it->getAge() >= this->borderAdultsToOldmen() && it->getAge() <= 100)
+            if ((rand()%((unsigned int)(1 / this->deathRateAdults()))) < 1)
+                (*it)->setIsAlive(false);
+        }
+        if (HisAge >= this->borderAdultsToOldmen() && HisAge <= 100){
             n_of_oldmen++;
-        it->setAge(it->getAge() + 1);
+            if ((rand()%((unsigned int)(1 / this->deathRateOldmen()))) < 1)
+                (*it)->setIsAlive(false);
+        }
+        if(HisAge > 100 || (*it)->isAlive() == false){
+            people.erase(it);
+        }
+        (*it)->setAge(HisAge + 1);
+
     }
     this->children = n_of_children;
     this->adults = n_of_adults;
@@ -118,13 +133,13 @@ void Population::native_death() {
 }
 
 void Population::check_dead_people() {
-    for (auto it = this->people.begin(); it != this->people.end(); it++)
+    /*for (auto it = this->people.begin(); it != this->people.end(); it++)
     {
         if (!(*it)->isAlive())
         {
             this->people.erase(it);
         }
-    }
+    }*/
     for (list<shared_ptr<Human>>& classification: this->classifications_of_humans)
     {
         for (auto it = classification.begin(); it != classification.end(); it++)
