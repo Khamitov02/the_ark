@@ -144,8 +144,9 @@ void Population::check_dead_people() {
     {
         for (auto it = classification.begin(); it != classification.end(); it++)
         {
-            if (!(*it)->isAlive())
+            if ((*it)->isAlive() == false || (*it)->getAge() >= this->borderAdultsToOldmen() )
             {
+                //(*it)->setTypeAsWorker();
                 classification.erase(it);
             }
         }
@@ -176,6 +177,14 @@ void Population::init(unsigned int total) {
         people.push_back(ptr);
     }
     // далее идет сортировка по необходимым классификациям
+
+   /* for(int i = 0; i <= classifications_of_humans.size(); i++){
+        switch(i){
+            case 1:
+                classifications_of_humans[i]. = TheArk::get_instance()->getMedicalService()->getNStaff();
+
+        }
+    }*/
 }
 
 
