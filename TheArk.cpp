@@ -141,19 +141,19 @@ void TheArk::snap()
 {
     auto &os_snap = *os;
 
-    os_snap << std::setw(CELL_WIDTH) << population->getTotal()
-            << std::setw(CELL_WIDTH) << population->getChildren()
-            << std::setw(CELL_WIDTH) << population->getAdults()
-            << std::setw(CELL_WIDTH) << population->getOldmen();
+    os_snap << std::setw(CELL_WIDTH) << population->getTotal() << ","
+            << std::setw(CELL_WIDTH) << population->getChildren() << ","
+            << std::setw(CELL_WIDTH) << population->getAdults() << ","
+            << std::setw(CELL_WIDTH) << population->getOldmen() << ",";
 
-    os_snap << std::setw(CELL_WIDTH) << resources->getConsumables()
-            << std::setw(CELL_WIDTH) << resources->getComponents()
-            << std::setw(CELL_WIDTH) << resources->getUsed()
-            << std::setw(CELL_WIDTH) << resources->getJunk()
-            << std::setw(CELL_WIDTH) << resources->getRefuse();
+    os_snap << std::setw(CELL_WIDTH) << resources->getConsumables() << ","
+            << std::setw(CELL_WIDTH) << resources->getComponents() << ","
+            << std::setw(CELL_WIDTH) << resources->getUsed() << ","
+            << std::setw(CELL_WIDTH) << resources->getJunk() << ","
+            << std::setw(CELL_WIDTH) << resources->getRefuse() << ",";
 
     for (auto s: services)
-        os_snap << std::setw(CELL_WIDTH) << s->getState();
+        os_snap << std::setw(CELL_WIDTH) << s->getState() << ",";
     os_snap << std::endl;
 }
 

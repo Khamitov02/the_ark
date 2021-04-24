@@ -1,31 +1,44 @@
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #include "TheArk.h"
+
 using std::cin;
 using std::cout;
 using std::endl;
 
+using std::setw;
+
+void print_table_header(std::ostream & fout);
+
 int main() {
     TheArk & ark = *TheArk::get_instance();
 
-    ark.init(&cin, &cout);
-    cout << std::setw(CELL_WIDTH) << "Total"
-         << std::setw(CELL_WIDTH) << "Child"
-         << std::setw(CELL_WIDTH) << "Adults"
-         << std::setw(CELL_WIDTH) << "Old"
-         << std::setw(CELL_WIDTH) << "Consum"
-         << std::setw(CELL_WIDTH) << "Compon"
-         << std::setw(CELL_WIDTH) << "Used"
-         << std::setw(CELL_WIDTH) << "Junk"
-         << std::setw(CELL_WIDTH) << "Ref";
+    std::ofstream fout("../TheArk.csv");
+    ark.init(&cin, &fout);
 
-    for (int i = 0; i < 6; ++i)
-        cout << std::setw(CELL_WIDTH - 1) << "St" << i;
-
-    cout << endl;
+    print_table_header(fout);
 
     ark.flight();
     ark.deleteArk();
 
     return 0;
+}
+
+void print_table_header(std::ostream & fout)
+{
+    fout << setw(CELL_WIDTH) << "Total" << ","
+         << setw(CELL_WIDTH) << "Child" << ","
+         << setw(CELL_WIDTH) << "Adults" << ","
+         << setw(CELL_WIDTH) << "Old" << ","
+         << setw(CELL_WIDTH) << "Consum" << ","
+         << setw(CELL_WIDTH) << "Compon" << ","
+         << setw(CELL_WIDTH) << "Used" << ","
+         << setw(CELL_WIDTH) << "Junk" << ","
+         << setw(CELL_WIDTH) << "Ref" << ",";
+
+    for (int i = 0; i < 6; ++i)
+        fout << setw(CELL_WIDTH - 1) << "St" << i << ",";
+
+    fout << endl;
 }
