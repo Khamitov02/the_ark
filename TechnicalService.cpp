@@ -26,7 +26,7 @@ void TechnicalService::process_accident(AccidentSeverity as)
     if (this->protectionState < 15)
         emergencyRepair();
     // kill some people
-    kill(as * this->staff / 20);
+    kill(0);
 }
 
 void TechnicalService::kill(int victims)
@@ -52,7 +52,7 @@ void TechnicalService::emergencyRepair()
     this->protectionState += repairing;
     this->resources -= int(repairing / 100) * maxResources;
     // убить много людей, так как экстренная и масштабная починка
-    kill(int(0.9 * this->staff));
+    kill(0);
 }
 
 void TechnicalService::process_year()
