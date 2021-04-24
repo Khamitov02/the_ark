@@ -7,90 +7,94 @@
 
 TechnicalService::TechnicalService()
 {
-    totalState = 100;
-    engineState = 100;
-    protectionState = 100;
-    serviceState = 100;
-    maxStaff = 200;
-    maxResources = 200;
-    staff = 170;
-    resources = 170;
+    this->totalState = 100;
+    this->engineState = 100;
+    this->protectionState = 100;
+    this->serviceState = 100;
+    this->maxStaff = 200;
+    this->maxResources = 200;
+    this->staff = 170;
+    this->resources = 170;
 }
 
 // идет "корректировка" состояния корабля в зависимости от степени аварии
 void TechnicalService::process_accident(AccidentSeverity as)
 {
-    protectionState -= as * 6.8; //подумать коэф
-    engineState -= as * (100 - protectionState) * 0.3;
-    totalState = 0.5 * (0.8 * protectionState + 1.2 * engineState);
-    if (protectionState < 15)
+    this->protectionState -= as * 6.8; //подумать коэф
+    this->engineState -= as * (100 - this->protectionState) * 0.3;
+    this->totalState = 0.5 * (0.8 * this->protectionState + 1.2 * this->engineState);
+    if (this->protectionState < 15)
         emergencyRepair();
     // kill some people
-    kill(as * staff / 20);
-    staff -= as * staff / 20;
+    kill(as * this->staff / 20);
 }
 
 void TechnicalService::kill(int victims)
 {
-    staff -= victims;
-    for (int i = 0; i < victims; i++) TheArk::get_instance()->getPopulation()->getAllClassification()[Technical_Service].pop_back();
+    this->staff -= victims;
+    list<shared_ptr<Human>>& humans = TheArk::get_instance()->getPopulation()->getAllClassification()[Technical_Service];
+    auto it = humans.begin();
+    for (int i = 0; i < victims; i ++)
+    {
+        (*it)->setIsAlive(false);
+        it ++;
+    }
 }
 
 // считает и возвращает состояние службы в зависимости от количества работающих людей и
 double TechnicalService::getState() {
-    return serviceState;
+    return this->serviceState;
 }
 
 void TechnicalService::emergencyRepair()
 {
-    double repairing = double(staff) / maxStaff * double(resources) / maxResources * 50;
-    protectionState += repairing;
-    resources -= int(repairing / 100) * maxResources;
+    double repairing = double(this->staff) / this->maxStaff * double(this->resources) / this->maxResources * 50;
+    this->protectionState += repairing;
+    this->resources -= int(repairing / 100) * maxResources;
     // убить много людей, так как экстренная и масштабная починка
-    staff = int(0.9 * staff);
-    kill(int(0.9 * staff));
+    kill(int(0.9 * this->staff));
 }
 
 void TechnicalService::process_year()
 {
     // обновление состояния службы
-    serviceState = 50 * (double(staff) / maxStaff + double(resources) / maxResources);
-    if (serviceState > 100)
-        serviceState = 100;
+    this->serviceState = 50 * (double(this->staff) / this->maxStaff + double(this->resources) / this->maxResources);
+    if (this->serviceState > 100)
+        this->serviceState = 100;
 
     // починка корабля
-    double repairing = double(staff) / maxStaff * double(resources) / maxResources * 10;
-    if (protectionState < 90)
+    double repairing = double(this->staff) / this->maxStaff * double(this->resources) / this->maxResources * 10;
+    if (this->protectionState < 90)
     {
-        protectionState += repairing;
-        resources -= int(repairing / 100) * maxResources;
+        this->protectionState += repairing;
+        this->resources -= int(repairing / 100) * this->maxResources;
         // можно убить пару людей в зависимости от масштаба ремонта
     }
-    if (protectionState > 60 && engineState < 90)
+    if (this->protectionState > 60 && this->engineState < 90)
     {
-        engineState += repairing;
-        resources -= int(repairing / 100) * maxResources;
+        this->engineState += repairing;
+        this->resources -= int(repairing / 100) * this->maxResources;
     }
     // износ корабля
-    protectionState -= (101 - protectionState) * 0.05;
-    engineState -= (100 - protectionState) * 0.05;
+    this->protectionState -= (101 - this->protectionState) * 0.05;
+    this->engineState -= (100 - this->protectionState) * 0.05;
 }
 
 double TechnicalService::efficiencyConsumablesToComponents() {
-    return double(staff) / maxStaff * 0.9;
+    return double(this->staff) / this->maxStaff * 0.9;
 }
 
 double TechnicalService::efficiencyJunkToConsumables() {
-    return double(staff) / maxStaff * 0.7;
+    return double(this->staff) / this->maxStaff * 0.7;
 }
 
 double TechnicalService::efficiencyJunkToRefuse() {
-    return double(staff) / maxStaff * 0.5;
+    return double(this->staff) / this->maxStaff * 0.5;
 }
 
 void TechnicalService::setState(double s)
 {
-    serviceState = s;
+    this->serviceState = s;
 }
 
 unsigned int TechnicalService::getResourceDemand() {
@@ -111,7 +115,7 @@ unsigned int TechnicalService::getStaffPriority() {
 
 bool TechnicalService::changeStaff(int delta) {
     staff += delta;
-    TheArk::get_instance()->getPopulation()->getAllClassification()[Technical_Service];
+    // TheArk::get_instance()->getPopulation()->getAllClassification()[Technical_Service];
     return true;
 }
 
