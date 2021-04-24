@@ -3,8 +3,15 @@
 
 #include "EmergencyService.h"
 
-EmergencyService::EmergencyService() : State(100)
-{}
+EmergencyService::EmergencyService()
+{
+    this->State = 100;
+    this->Staff; //персонала в данный момент
+    this->max_Staff = 100;//максимальное количество персонала в службе
+    this->Resources = 100;
+    this->max_Resources = 100;
+
+}
 
 
 //от 0 до 1, чем хуже состояние службы - тем выше вероятность аварии
@@ -58,10 +65,16 @@ void EmergencyService::determine_severity(Service* s)
 
 void EmergencyService:: process_year()
 {
+    // обновление состояния корабля в зависимости от кол-ва людей, ресурсов и аварий
+
+
+    //генерация чс
     for (auto s : TheArk::get_instance()->getServices())
     {
         this->create_accident(s);
     }
+
+
 }
 
 //для обработки переданных аварий
@@ -84,8 +97,43 @@ void EmergencyService::setState(double s)
     State = s;
 }
 
-//unsigned int EmergencyService::getResourceDemand()
-//{}
-//unsigned int EmergencyService::getStaffDemand()
-//{}
+unsigned int EmergencyService::getStaffDemand()
+{
+    return this->max_Staff - this->Staff;
+}
+
+// управление ресурсами
+bool EmergencyService::changeResources(int delta)
+{
+    if (delta < 0)//отняли ресурсы; из-за аварии 
+    {
+        TheArk::get_instance()->getResources()->setUsedToJunk(- delta, 5); //вернули мусор
+    }
+    else //добавляем ресурсы в количестве недостающих - 10 - ежегодный износ
+    {
+        TheArk::get_instance()->getResources()->setComponentsToUsed(delta, 5);
+    }
+    this->Resources += delta;
+    return true;
+}
+
+unsigned int EmergencyService::getResourceDemand()
+{
+    return this->max_Resources - this->Resources;
+    
+}
+
+
+unsigned int EmergencyService::getNStaff()
+{
+    return TheArk::get_instance()->getPopulation()->getAllClassification()[Emergency_Service].size();
+}
+
+
+//ресурсы обновляешь сам - с помощью метода , который засунуть в процесс еар каждый год сколько-то берешь, сколько отдаешь
+//ресурсы - это типа как хранилище
+//сам берешь, никто не дает
+
+
+
 

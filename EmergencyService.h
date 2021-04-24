@@ -14,12 +14,20 @@
 #include "BiologicalService.h"
 #include "SocialService.h"
 #include "TechnicalService.h"
+#include "Human.h"
+#include "Population.h"
+#include "Resources.h"
 
 
-
-class EmergencyService : public Service {
+class EmergencyService : public Service
+{
 private:
     double State;
+
+    unsigned int Staff; //персонала в данный момент
+    unsigned int max_Staff;//максимальное количество персонала в службе
+    unsigned int Resources;
+    unsigned int max_Resources;
 
 public:
     EmergencyService();
@@ -32,9 +40,12 @@ public:
     void process_year() override;                   // если у службы есть какая-то личная жизнь, она может заниматься ей тут
     double getState() override;                             // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
     void setState(double s) override;                       // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
-
-    //unsigned int getResourceDemand();           // сколько ресурсов требуется
-    //unsigned int getStaffDemand();              // сколько людей требуется
+    
+    unsigned int getNStaff();
+    unsigned int getStaffDemand();
+    unsigned int getResourceDemand();
+    bool changeResources(int delta);
+    
 };
 
 
