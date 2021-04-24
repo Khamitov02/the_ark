@@ -64,6 +64,6 @@ public:
     ~TheArk();
 };
 
-const uint CELL_WIDTH = 7;
+const uint CELL_WIDTH = 11;
 
 #endif //THE_ARK_THEARK_H

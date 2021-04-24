@@ -27,7 +27,11 @@ int main() {
 
 void print_table_header(std::ostream & fout)
 {
-    fout << setw(CELL_WIDTH) << "Total" << ","
+    std::array<std::string, 6> services_names = {"Technical", "Biological",
+                                                 "Medical", "Navigation",
+                                                 "Emergency", "Social"};
+    fout << setw(CELL_WIDTH) << "Year" << ","
+         << setw(CELL_WIDTH) << "Total" << ","
          << setw(CELL_WIDTH) << "Child" << ","
          << setw(CELL_WIDTH) << "Adults" << ","
          << setw(CELL_WIDTH) << "Old" << ","
@@ -38,7 +42,7 @@ void print_table_header(std::ostream & fout)
          << setw(CELL_WIDTH) << "Ref" << ",";
 
     for (int i = 0; i < 6; ++i)
-        fout << setw(CELL_WIDTH - 1) << "St" << i << ",";
+        fout << setw(CELL_WIDTH) << services_names[i] << ",";
 
     fout << endl;
 }

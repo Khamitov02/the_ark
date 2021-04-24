@@ -7,6 +7,7 @@
 #include "SocialService.h"
 #include "Population.h"
 #include "Resources.h"
+#include <iostream>
 
 TheArk* TheArk::instance = nullptr;
 
@@ -48,6 +49,10 @@ void TheArk::init(std::istream *_is, std::ostream *_os)
     os = _os;
     auto &is_init = *_is;
 
+    std::array<std::string, 6> services_names = {"Technical", "Biological",
+                                                 "Medical", "Navigation",
+                                                 "Emergency", "Social"};
+
     population = new Population();
     resources = new Resources();
     services[0] = new TechnicalService();
@@ -57,18 +62,23 @@ void TheArk::init(std::istream *_is, std::ostream *_os)
     services[4] = new EmergencyService();
     services[5] = new SocialService();
 
+    std::cout << "Years total: ";
     is_init >> years_total;
 
-    for (auto s: services) {
+    for (int i = 0; i < 6; ++i)
+    {
         unsigned int percent;
+        std::cout << services_names[i] << " service condition: ";
         is_init >> percent;
-        s->setState(percent);
+        services[i]->setState(percent);
     }
 
     unsigned int total;
+    std::cout << "Population: ";
     is_init >> total;
     population->init(total);
 
+    std::cout << "Resources: ";
     is_init >> total;
     resources->init(total);
 }
@@ -130,8 +140,11 @@ void TheArk::processYear() {
 }
 
 void TheArk::flight() {
+    std::ostream& out = *os;
+
     for (current_year = 0; current_year < years_total; current_year++)
     {
+        out << std::setw(CELL_WIDTH) << current_year + 1 << ",";
         processYear();
         snap();
     }
