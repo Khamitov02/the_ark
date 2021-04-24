@@ -8,6 +8,7 @@
 #include <array>
 #include <istream>
 #include <ostream>
+#include <iomanip>
 
 class Service;
 class TechnicalService;
@@ -63,5 +64,6 @@ public:
     ~TheArk();
 };
 
+const uint CELL_WIDTH = 7;
 
 #endif //THE_ARK_THEARK_H

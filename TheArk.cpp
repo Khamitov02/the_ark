@@ -137,12 +137,23 @@ void TheArk::flight() {
     }
 }
 
-void TheArk::snap() {
+void TheArk::snap()
+{
     auto &os_snap = *os;
-    os_snap << population->getTotal() << " " << population->getChildren() << " " << population->getAdults() << " " << population->getOldmen() << std::endl;
-    os_snap << resources->getConsumables() << " " << resources->getComponents() << " " << resources->getUsed() << " " << resources->getJunk() << " " << resources->getRefuse() << std::endl;
+
+    os_snap << std::setw(CELL_WIDTH) << population->getTotal()
+            << std::setw(CELL_WIDTH) << population->getChildren()
+            << std::setw(CELL_WIDTH) << population->getAdults()
+            << std::setw(CELL_WIDTH) << population->getOldmen();
+
+    os_snap << std::setw(CELL_WIDTH) << resources->getConsumables()
+            << std::setw(CELL_WIDTH) << resources->getComponents()
+            << std::setw(CELL_WIDTH) << resources->getUsed()
+            << std::setw(CELL_WIDTH) << resources->getJunk()
+            << std::setw(CELL_WIDTH) << resources->getRefuse();
+
     for (auto s: services)
-        os_snap << s->getState() << " ";
+        os_snap << std::setw(CELL_WIDTH) << s->getState();
     os_snap << std::endl;
 }
 
