@@ -50,12 +50,25 @@ Resources::Resources() : consumables(0), components(0), used_by_services({0, 0, 
 }
 
 void Resources::processYear() {
-	consumables *= efficiencyConsumablesToComponents()/100;
-	components  *= efficiencyConsumablesToComponents()/100;
-	consumables *= efficiencyJunkToConsumables()/100;
-	junk        *= efficiencyJunkToConsumables()/100;
-	junk        *= efficiencyJunkToRefuse()/100;
-	refuse      *= efficiencyJunkToRefuse()/100;	
+	if (consumables > 0)
+	{
+		consumables -= consumables*efficiencyConsumablesToComponents();
+	}
+
+	components  += consumables*efficiencyConsumablesToComponents();
+	consumables += junk*efficiencyJunkToConsumables();
+	
+	if (junk > 0)
+	{
+		junk -= junk*efficiencyJunkToConsumables();
+	}
+	
+	if (junk > 0)
+	{
+		junk -= junk*efficiencyJunkToRefuse();
+	}
+	
+	refuse      += junk*efficiencyJunkToRefuse();	
 }
 
 void Resources::setComponentsToUsed(unsigned int current_usage, int id) {
@@ -89,7 +102,7 @@ double Resources::efficiencyJunkToRefuse() const {
 }
 
 void Resources::init(unsigned int total) {
-	Resource GeneralResources(total);
-	consumables = 0.3 * total;
-	components  = 0.2 * total;
+	consumables = 0.5 * total;
+	components  = 0.5 * total;
+	Resource GeneralResources(components);
 }
