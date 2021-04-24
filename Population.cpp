@@ -6,6 +6,11 @@
 #include "TheArk.h"
 #include "MedicalService.h"
 #include "SocialService.h"
+#include "TechnicalService.h"
+#include "BiologicalService.h"
+#include "EmergencyService.h"
+#include "NavigationService.h"
+#include "Enums.cpp"
 #include <cstdlib>
 
 Population::Population() : children(0), adults(0), oldmen(0){}
@@ -36,6 +41,27 @@ unsigned int Population::borderAdultsToOldmen()
     return TheArk::get_instance()->getMedicalService()->borderAdultsToOldmen();
 }
 
+unsigned int Population::number_staff(Classification_of_humans serves)
+{
+    switch(serves){
+        case Technical_Service:
+            return TheArk::get_instance()->getTechnicalService()->getNStaff();
+        case Biological_Service:
+            return TheArk::get_instance()->getBiologicalService()->getNStaff();
+        case Medical_Service:
+            return TheArk::get_instance()->getMedicalService()->getNStaff();
+        case Navigation_Service:
+            return TheArk::get_instance()->getNavigationService()->getNStaff();
+        case Emergency_Service:
+            return TheArk::get_instance()->getEmergencyService()->getNStaff();
+        case Social_Service:
+            return TheArk::get_instance()->getSocialService()->getNStaff();
+        default:
+            return 0;
+    }
+
+}
+
 double Population::deathRateChildren()
 {
     return TheArk::get_instance()->getMedicalService()->deathRateChildren();
@@ -61,42 +87,61 @@ array<list<shared_ptr<Human>>, 7>& Population::getAllClassification()
 }
 
 void Population::processYear() {
-
-    //this->native_death();
-    this->check_dead_people();
-
-    // далее идет обработка по возрасту
+    // обработка по возрасту и смертность сразу же, чтобы два раза не ходить
     unsigned int n_of_adults = 0;
     unsigned int n_of_oldmen = 0;
     unsigned int n_of_children = 0;
     unsigned int HisAge = 0;
-    for (auto it = people.begin(); it != people.begin(); it++) {
+
+    for (auto it = this->people.begin(); it != this->people.begin(); it++) {
+
         HisAge = (*it)->getAge();
+
+        //подсчёт количества населения по группам и обработка случайной смертности
         if (HisAge < this->borderChildrenToAdults()){
             n_of_children++;
-            if ((rand()%((unsigned int)(1 / this->deathRateChildren()))) < 1)
+            if ((rand()%((unsigned int)(1 / this->deathRateChildren()))) < 2) {
                 (*it)->setIsAlive(false);
+                n_of_children--;
+            }
         }
         if ((HisAge >= this->borderChildrenToAdults()) && (HisAge < borderAdultsToOldmen())){
             n_of_adults++;
-            if ((rand()%((unsigned int)(1 / this->deathRateAdults()))) < 1)
+            if ((rand()%((unsigned int)(1 / this->deathRateAdults()))) < 2) {
                 (*it)->setIsAlive(false);
+                n_of_adults--;
+            }
         }
         if (HisAge >= this->borderAdultsToOldmen() && HisAge <= 100){
             n_of_oldmen++;
-            if ((rand()%((unsigned int)(1 / this->deathRateOldmen()))) < 1)
+            if ((rand()%((unsigned int)(1 / this->deathRateOldmen()))) < 2) {
                 (*it)->setIsAlive(false);
+                n_of_oldmen--;
+            }
         }
-        if(HisAge > 100 || (*it)->isAlive() == false){
-            people.erase(it);
+        if((*it)->getPhysicalHealth() <= 10 || (*it)->getMoralHealth() <= 5){
+            (*it)->setIsAlive(false);
         }
+        if(HisAge > 100){
+            (*it)->setIsAlive(false);
+        }
+
+        //увеличение возраста
         (*it)->setAge(HisAge + 1);
+
+        //попанье мертвых
+        if (!(*it)->isAlive())
+        {
+            this->people.erase(it);
+        }
 
     }
     this->children = n_of_children;
     this->adults = n_of_adults;
     this->oldmen = n_of_oldmen;
     // конец обработки по возрасту
+
+    this->check_dead_people_is_classifications(); // см коммент в ф-ции
 
     // тут ещё безусловно нужно написать рождаемость, иначе все подохнут
     // дальше идет просмотр обучающихся и обработка тех, кто отучился. Их пихаем в службы по запросам
@@ -105,77 +150,60 @@ void Population::processYear() {
     //конец обработки
 }
 
-void Population::native_death() {
-    for (shared_ptr<Human>& person : this->people)
-    {
-        if (person->getAge() < this->borderChildrenToAdults())
-        {
-            if ((rand()%((unsigned int)(1 / this->deathRateChildren()))) < 1)
-                person->setIsAlive(false);
-        }
-
-        if (person->getAge() > this->borderChildrenToAdults() && person->getAge() < this->borderAdultsToOldmen())
-        {
-            if ((rand()%((unsigned int)(1 / this->deathRateAdults()))) < 1)
-                person->setIsAlive(false);
-        }
-
-        if (person->getAge() > this->borderAdultsToOldmen())
-        {
-            if ((rand()%((unsigned int)(1 / this->deathRateOldmen()))) < 1)
-                person->setIsAlive(false);
-        }
-
-        if (person->getAge() > 100){
-            person->setIsAlive(false);
-        }
-    }
-}
-
-void Population::check_dead_people() {
-    /*for (auto it = this->people.begin(); it != this->people.end(); it++)
-    {
-        if (!(*it)->isAlive())
-        {
-            this->people.erase(it);
-        }
-    }*/
+void Population::check_dead_people_is_classifications() {
+    // удаление людей с is_alive == false из всех классификаций
     for (list<shared_ptr<Human>>& classification: this->classifications_of_humans)
     {
         for (auto it = classification.begin(); it != classification.end(); it++)
         {
             if (!(*it)->isAlive())
-            {
                 classification.erase(it);
-            }
         }
     }
 }
 
 void Population::init(unsigned int total) {
-    children = (unsigned int)(0.1 * total);
-    oldmen = (unsigned int)(0.2 * total);
-    adults = total - children - oldmen;
+    this->children = (unsigned int)(0.1 * total);
+    this->oldmen = (unsigned int)(0.2 * total);
+    this->adults = total - children - oldmen;
 
-    for(int i = 0; i < children; i++){          // заполняем детьми
+    for(int i = 0; i < this->children; i++){          // заполняем детьми
         auto* person = new Human();
         person->setAge((rand()% this->borderChildrenToAdults()));
         auto ptr = shared_ptr<Human>(person);
-        people.push_back(ptr);
+        this->people.push_back(ptr);
     }
-    for(int i = 0; i < oldmen; i++) {            // заполняем стариками
+    for(int i = 0; i < this->oldmen; i++) {            // заполняем стариками
         auto *person = new Human;
         person->setAge((this->borderAdultsToOldmen() + rand() % (100 - this->borderAdultsToOldmen() + 1)));
         auto ptr = shared_ptr<Human>(person);
-        people.push_back(ptr);
+        this->people.push_back(ptr);
     }
-    for(int i = 0; i < adults; i++){        // заполняем взрослыми всех остальных людей
+    for(int i = 0; i < this->adults; i++){        // заполняем взрослыми всех остальных людей
         auto* person = new Human;
         person->setAge((this->borderChildrenToAdults()+ rand()% (this->borderAdultsToOldmen() - this->borderChildrenToAdults() + 1)));
         auto ptr = shared_ptr<Human>(person);
-        people.push_back(ptr);
+        this->people.push_back(ptr);
     }
     // далее идет сортировка по необходимым классификациям
+    int staffs = 0, o = 0;
+
+   for(int i = 0; i < this->classifications_of_humans.size(); i++){
+       staffs = number_staff(Classification_of_humans(i));
+       o = 0;
+       auto iter = this->people.begin();
+
+        while(o!= staffs && iter != this->people.end() ){
+            if((*iter)->getAge() > this->borderChildrenToAdults() + Education::FifthYear && (*iter)->getAge() < this->borderAdultsToOldmen()){
+                if((*iter)->getTypeAsAWorker() == UNDEFINED || (*iter)->getTypeAsAWorker() == UNEMPLOYED){
+                    this->classifications_of_humans[i].push_back(*iter);
+                    (*iter)->setTypeAsAWorker(WORKER);
+                    o++;
+                }
+            }
+            iter++;
+        }
+    }
 }
 
 

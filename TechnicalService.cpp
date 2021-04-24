@@ -3,6 +3,7 @@
 //
 
 #include "TechnicalService.h"
+#include "TheArk.h"
 
 TechnicalService::TechnicalService()
 {
@@ -25,7 +26,14 @@ void TechnicalService::process_accident(AccidentSeverity as)
     if (protectionState < 15)
         emergencyRepair();
     // kill some people
+    kill(as * staff / 20);
     staff -= as * staff / 20;
+}
+
+void TechnicalService::kill(int victims)
+{
+    staff -= victims;
+    for (int i = 0; i < victims; i++) TheArk::get_instance()->getPopulation()->getAllClassification()[Technical_Service].pop_back();
 }
 
 // считает и возвращает состояние службы в зависимости от количества работающих людей и
@@ -40,6 +48,7 @@ void TechnicalService::emergencyRepair()
     resources -= int(repairing / 100) * maxResources;
     // убить много людей, так как экстренная и масштабная починка
     staff = int(0.9 * staff);
+    kill(int(0.9 * staff));
 }
 
 void TechnicalService::process_year()
@@ -102,6 +111,7 @@ unsigned int TechnicalService::getStaffPriority() {
 
 bool TechnicalService::changeStaff(int delta) {
     staff += delta;
+    TheArk::get_instance()->getPopulation()->getAllClassification()[Technical_Service];
     return true;
 }
 

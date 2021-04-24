@@ -23,18 +23,18 @@ private:
     unsigned int borderChildrenToAdults();
     unsigned int borderAdultsToOldmen();
 
-    unsigned int getMedicalStaff();
+    unsigned int number_staff(Classification_of_humans serves);
 
     double deathRateChildren();
     double deathRateAdults();
     double deathRateOldmen();
 
+
     void native_death();
-    void check_dead_people(); // пробежались по всем всем листам и попнули умерших
+    void check_dead_people_is_classifications(); // пробежались по всем всем листам и попнули умерших
 
     array<list<shared_ptr<Human>>, 7> classifications_of_humans;
     list<shared_ptr<Human>> people;
-    list<shared_ptr<Human>> MedicalService;
 
 
 public:

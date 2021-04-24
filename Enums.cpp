@@ -19,8 +19,8 @@ enum AccidentSeverity {
 enum Profession {
     UNEMPLOYED,
     WORKER,
-    SCIENTIST,
-    UNDEFINED
+    UNDEFINED,
+    STUDYING
 };
 
 enum Classification_of_humans{
