@@ -4,11 +4,11 @@ using std::cin;
 using std::cout;
 
 int main() {
-    TheArk::get_instance()->init(&cin, &cout);
+    TheArk & ark = *TheArk::get_instance();
 
-    TheArk::get_instance()->flight();
-
-    TheArk::get_instance()->deleteArk();
+    ark.init(&cin, &cout);
+    ark.flight();
+    ark.deleteArk();
 
     return 0;
 }
