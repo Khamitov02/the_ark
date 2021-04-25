@@ -100,21 +100,21 @@ void Population::processYear() {
         //подсчёт количества населения по группам и обработка случайной смертности
         if (HisAge < this->borderChildrenToAdults()){
             children++;
-            if ((rand()%(1+(unsigned int)(1 / this->deathRateChildren()))) < 2) {
+            if (rand() <= this->deathRateChildren() * RAND_MAX) {
                 (*it)->setIsAlive(false);
                 children--;
             }
         }
         if ((HisAge >= this->borderChildrenToAdults()) && (HisAge < borderAdultsToOldmen())){
             adults++;
-            if ((rand()%(1+(unsigned int)(1 / this->deathRateAdults()))) < 2) {
+            if (rand() <= this->deathRateAdults() * RAND_MAX) {
                 (*it)->setIsAlive(false);
                 adults--;
             }
         }
         if (HisAge >= this->borderAdultsToOldmen() && HisAge <= 100){
             oldmen++;
-            if ((rand()%(1+(unsigned int)(1 / this->deathRateOldmen()))) < 2) {
+            if (rand() <= this->deathRateOldmen() * RAND_MAX) {
                 (*it)->setIsAlive(false);
                 oldmen--;
             }
