@@ -126,7 +126,7 @@ void Population::processYear() {
             (*it)->setIsAlive(false);
         }
 
-        //увеличение возраста
+        //старение
         (*it)->setAge(HisAge + 1);
 
         //попанье мертвых
