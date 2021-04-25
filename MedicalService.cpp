@@ -13,46 +13,62 @@ MedicalService::MedicalService() : retirementAge(65), ChildrenDeath(0.0001), Adu
                                    State(100), n_engineers(70), resources(1000) {}
 
 void MedicalService::process_accident(AccidentSeverity as) {
-
 }
 
 void MedicalService::process_year() {
-    unsigned int oll_health = 0, IlChild = 0, IlAd = 0, IlOld = 0;
-    unsigned int HIlChild = 0, HIlAd = 0, HIlOld = 0;
-    for (auto &it : TheArk::get_instance()->getPopulation()->getPeople()) {
-        oll_health += it->getPhysicalHealth();
-        if ((it->getPhysicalHealth() < 60) &&
-            (it->getAge() < TheArk::get_instance()->getSocialService()->borderChildrenToAdults())) {
-            if (it->getPhysicalHealth() < 30)
-                HIlChild++;
+    unsigned int oll_health = 0, IlChild = 0, IlAd = 0, IlOld = 0;                                          // количество больных
+    unsigned int HIlChild = 0, HIlAd = 0, HIlOld = 0;                                                       // количество тяжелобольных
+    for (auto &it : TheArk::get_instance()->getPopulation()->getPeople()) {                                 // обходим по всем людям на корабле
+        oll_health += it->getPhysicalHealth();                                                              // считаем общий показатель здоровья
+        if (it->getAge() < TheArk::get_instance()->getSocialService()->borderChildrenToAdults()) {
+            if ((it->getPhysicalHealth() < 60) && (it->getPhysicalHealth() > 30)) {
+                IlChild++;                                                                                   // считаем количество больных детей
+                it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 4 - rand() % 3);
+            }
+            if (it->getPhysicalHealth() < 30) {
+                HIlChild++;                                                                                  // считаем количество тяжелобольных детей
+                it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 4 - rand() % 4);
+            }
             it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 5 - rand() % 3);
-            IlChild++;
+            if (it->getPhysicalHealth() > 100) it->setPhysicalHealth(100);
         }
-        if ((it->getPhysicalHealth() < 60) &&
-            (it->getAge() >= TheArk::get_instance()->getSocialService()->borderChildrenToAdults()) &&
+        if ((it->getAge() >= TheArk::get_instance()->getSocialService()->borderChildrenToAdults()) &&
             (it->getAge() <= borderAdultsToOldmen())) {
-            if (it->getPhysicalHealth() < 30)
+            if ((it->getPhysicalHealth() < 60) && (it->getPhysicalHealth() > 30)) {
+                IlAd++;
+                it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 3 - rand() % 3);
+            }
+            if (it->getPhysicalHealth() < 30) {
                 HIlAd++;
+                it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 3 - rand() % 4);
+            }
             it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 4 - rand() % 4);
-            IlAd++;
+            if (it->getPhysicalHealth() > 100) it->setPhysicalHealth(100);
         }
-        if ((it->getPhysicalHealth() < 60) &&
-            (it->getAge() > borderAdultsToOldmen())) {
-            if (it->getPhysicalHealth() < 30)
+        if (it->getAge() > borderAdultsToOldmen()) {
+            if ((it->getPhysicalHealth() < 60) && (it->getPhysicalHealth() > 30)) {
+                IlOld++;
+                it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 2 - rand() % 3);
+            }
+            if (it->getPhysicalHealth() < 30) {
                 HIlOld++;
+                it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 2 - rand() % 5);
+            }
             it->setPhysicalHealth(it->getPhysicalHealth() + rand() % 3 - rand() % 5);
-            IlOld++;
+            if (it->getPhysicalHealth() > 100) it->setPhysicalHealth(100);
         }
     }
-    State = 1.0 * oll_health / TheArk::get_instance()->getPopulation()->getTotal();
+    State = 1.0 * oll_health /
+            TheArk::get_instance()->getPopulation()->getTotal();                                        // вычислятся State исходя из среднего здоровья всего корабля
     ChildrenDeath = 0.01 * TheArk::get_instance()->getSocialService()->getState() * HIlChild /
-                    TheArk::get_instance()->getPopulation()->getChildren();
+                    TheArk::get_instance()->getPopulation()->getChildren();                             // вычислятся веротность смерти из процента тяжелобольных
     AdultDeath = 0.05 * TheArk::get_instance()->getSocialService()->getState() * HIlAd /
                  TheArk::get_instance()->getPopulation()->getAdults();
     OldDeath = 0.1 * TheArk::get_instance()->getSocialService()->getState() * HIlOld /
                TheArk::get_instance()->getPopulation()->getOldmen();
 
-    retirementAge = 51 * (2 - pow(TheArk::get_instance()->getSocialService()->getState(), 2));
+    retirementAge = 51 * (2 - TheArk::get_instance()->getSocialService()->getState() *
+                              State);         // вычислятся пенсионный возраст исходя из состояния медицины и социума
 
 }
 
