@@ -156,10 +156,16 @@ void Population::check_dead_people_is_classifications() {
     // удаление людей с is_alive == false из всех классификаций
     for (list<shared_ptr<Human>>& classification: this->classifications_of_humans)
     {
-        for (auto it = classification.begin(); it != classification.end(); it++)
+        for (auto it = classification.begin(); it != classification.end();)
         {
-            if (!(*it)->isAlive())
-                classification.erase(it);
+            if (!(*it)->isAlive()){
+                auto nit = it;
+                ++it;
+                classification.erase(nit);
+            }
+            else{
+                ++it;
+            }
         }
     }
 }
