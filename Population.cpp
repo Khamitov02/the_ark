@@ -88,35 +88,35 @@ array<list<shared_ptr<Human>>, 7>& Population::getAllClassification()
 
 void Population::processYear() {
     // обработка по возрасту и смертность сразу же, чтобы два раза не ходить
-    unsigned int n_of_adults = 0;
-    unsigned int n_of_oldmen = 0;
-    unsigned int n_of_children = 0;
+    children = 0;
+    adults = 0;
+    oldmen = 0;
     unsigned int HisAge = 0;
 
-    for (auto it = this->people.begin(); it != this->people.begin(); it++) {
+    for (auto it = people.begin(); it != people.end();) {
 
         HisAge = (*it)->getAge();
 
         //подсчёт количества населения по группам и обработка случайной смертности
         if (HisAge < this->borderChildrenToAdults()){
-            n_of_children++;
-            if ((rand()%((unsigned int)(1 / this->deathRateChildren()))) < 2) {
+            children++;
+            if ((rand()%(1+(unsigned int)(1 / this->deathRateChildren()))) < 2) {
                 (*it)->setIsAlive(false);
-                n_of_children--;
+                children--;
             }
         }
         if ((HisAge >= this->borderChildrenToAdults()) && (HisAge < borderAdultsToOldmen())){
-            n_of_adults++;
-            if ((rand()%((unsigned int)(1 / this->deathRateAdults()))) < 2) {
+            adults++;
+            if ((rand()%(1+(unsigned int)(1 / this->deathRateAdults()))) < 2) {
                 (*it)->setIsAlive(false);
-                n_of_adults--;
+                adults--;
             }
         }
         if (HisAge >= this->borderAdultsToOldmen() && HisAge <= 100){
-            n_of_oldmen++;
-            if ((rand()%((unsigned int)(1 / this->deathRateOldmen()))) < 2) {
+            oldmen++;
+            if ((rand()%(1+(unsigned int)(1 / this->deathRateOldmen()))) < 2) {
                 (*it)->setIsAlive(false);
-                n_of_oldmen--;
+                oldmen--;
             }
         }
         if((*it)->getPhysicalHealth() <= 10 || (*it)->getMoralHealth() <= 5){
@@ -132,13 +132,15 @@ void Population::processYear() {
         //попанье мертвых
         if (!(*it)->isAlive())
         {
-            this->people.erase(it);
+            auto tmpit = it;
+            ++it;
+            this->people.erase(tmpit);
+        }
+        else{
+            ++it;
         }
 
     }
-    this->children = n_of_children;
-    this->adults = n_of_adults;
-    this->oldmen = n_of_oldmen;
     // конец обработки по возрасту
 
     this->check_dead_people_is_classifications(); // см коммент в ф-ции
