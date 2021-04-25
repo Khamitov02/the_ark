@@ -18,7 +18,7 @@ void SocialService::process_accident(AccidentSeverity as) {
     // элементарное изменение ментального здоровья в следствии каких-либо чрезвычайных событий:
     const unsigned int CHANGE_MENTAL_HEALTH = 1;
     // элементарное изменение физического здоровья в следствии каких-либо чрезвычайных событий:
-    const unsigned int CHANGE_PHYSICLE_HEALTH = 1;
+    const unsigned int CHANGE_PHYSICAL_HEALTH = 1;
 
     // вероятность повышения ментального здоровья в следствии чрезвычайного события NEGLIGIBLE:
     const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH_LIGHT = 80;
@@ -26,14 +26,14 @@ void SocialService::process_accident(AccidentSeverity as) {
     // вероятность повышения ментального здоровья в следствии чрезвычайных события LIGHT:
     const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH_NEGLIGIBLE = 40;
     // вероятность уменьшения физического здоровья в следствии чрезвычайных события LIGHT:
-    const unsigned int PROBABILITY_CHANGE_PHYSICLE_HEALTH_NEGLIGIBLE = 40;
+    const unsigned int PROBABILITY_CHANGE_PHYSICAL_HEALTH_NEGLIGIBLE = 40;
 
     // вероятность уменьшения ментального здоровья в следствии чрезвычайных событий
     // MEDIUM, SEVERE, DISASTROUS, CATASTROPHIC:
     const unsigned int PROBABILITY_CHANGE_MENTAL_HEALTH = 80;
     // вероятность уменьшения физического здоровья в следствии чрезвычайных событий
     // MEDIUM, SEVERE, DISASTROUS, CATASTROPHIC:
-    const unsigned int PROBABILITY_CHANGE_PHYSICLE_HEALTH = 80;
+    const unsigned int PROBABILITY_CHANGE_PHYSICAL_HEALTH = 80;
 
     // Вероятность уменьшения того или иного парметра выходит на постоянный уровень ввиду того,
     // наш кораблся оборудован всеми необходимыми средствами безопасности, чтобы минимизировать потери
@@ -84,8 +84,8 @@ void SocialService::process_accident(AccidentSeverity as) {
                         if ((rand() % 100) <= 100 - PROBABILITY_CHANGE_MENTAL_HEALTH_NEGLIGIBLE) {
                             person->setMoralHealth(person->getMoralHealth() - 2 * CHANGE_MENTAL_HEALTH);
                         }
-                        if ((rand() % 100) <= 100 - PROBABILITY_CHANGE_PHYSICLE_HEALTH_NEGLIGIBLE) {
-                            person->setPhysicalHealth(person->getMoralHealth() - CHANGE_PHYSICLE_HEALTH);
+                        if ((rand() % 100) <= 100 - PROBABILITY_CHANGE_PHYSICAL_HEALTH_NEGLIGIBLE) {
+                            person->setPhysicalHealth(person->getMoralHealth() - CHANGE_PHYSICAL_HEALTH);
                         }
                         if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
                             person->setIsAlive(false);
@@ -107,7 +107,7 @@ void SocialService::process_accident(AccidentSeverity as) {
                     if ((rand() % 100) <= PROBABILITY_CHANGE_MENTAL_HEALTH) {
                         person->setMoralHealth(person->getMoralHealth() - 3 * CHANGE_MENTAL_HEALTH);
                     }
-                    if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICLE_HEALTH) {
+                    if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICAL_HEALTH) {
                         person->setMoralHealth(person->getMoralHealth() - 2 * CHANGE_MENTAL_HEALTH);
                     }
                     if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
@@ -132,9 +132,9 @@ void SocialService::process_accident(AccidentSeverity as) {
                             person->setMoralHealth(person->getMoralHealth() -
                             3 * CHANGE_MENTAL_HEALTH);
                         }
-                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICLE_HEALTH) {
+                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICAL_HEALTH) {
                             person->setPhysicalHealth(person->getMoralHealth() -
-                            2 * CHANGE_PHYSICLE_HEALTH);
+                            2 * CHANGE_PHYSICAL_HEALTH);
                         }
                         if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
                             person->setIsAlive(false);
@@ -153,9 +153,9 @@ void SocialService::process_accident(AccidentSeverity as) {
                             person->setMoralHealth(person->getMoralHealth() -
                             4 * CHANGE_MENTAL_HEALTH);
                         }
-                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICLE_HEALTH) {
+                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICAL_HEALTH) {
                             person->setPhysicalHealth(person->getMoralHealth() -
-                            3 * CHANGE_PHYSICLE_HEALTH);
+                            3 * CHANGE_PHYSICAL_HEALTH);
                         }
                         if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
                             person->setIsAlive(false);
@@ -186,9 +186,9 @@ void SocialService::process_accident(AccidentSeverity as) {
                             person->setMoralHealth(person->getMoralHealth() -
                             4 * CHANGE_MENTAL_HEALTH);
                         }
-                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICLE_HEALTH) {
+                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICAL_HEALTH) {
                             person->setPhysicalHealth(person->getMoralHealth() -
-                            3 * CHANGE_PHYSICLE_HEALTH);
+                            3 * CHANGE_PHYSICAL_HEALTH);
                         }
                         if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
                             person->setIsAlive(false);
@@ -207,9 +207,9 @@ void SocialService::process_accident(AccidentSeverity as) {
                             person->setMoralHealth(person->getMoralHealth() -
                             5 * CHANGE_MENTAL_HEALTH);
                         }
-                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICLE_HEALTH) {
+                        if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICAL_HEALTH) {
                             person->setPhysicalHealth(person->getMoralHealth() -
-                            3 * CHANGE_PHYSICLE_HEALTH);
+                            3 * CHANGE_PHYSICAL_HEALTH);
                         }
                         if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
                             person->setIsAlive(false);
@@ -237,8 +237,8 @@ void SocialService::process_accident(AccidentSeverity as) {
                     if ((rand() % 100) <= PROBABILITY_CHANGE_MENTAL_HEALTH) {
                         person->setMoralHealth(person->getMoralHealth() - 7 * CHANGE_MENTAL_HEALTH);
                     }
-                    if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICLE_HEALTH) {
-                        person->setPhysicalHealth(person->getMoralHealth() - 5 * CHANGE_PHYSICLE_HEALTH);
+                    if ((rand() % 100) <= PROBABILITY_CHANGE_PHYSICAL_HEALTH) {
+                        person->setPhysicalHealth(person->getMoralHealth() - 5 * CHANGE_PHYSICAL_HEALTH);
                     }
                     if (person->getPhysicalHealth() == 0 || person->getMoralHealth() <= 3) {
                         person->setIsAlive(false);
@@ -341,22 +341,29 @@ void SocialService::update_person(Human &person) {
     }
 
     // логика "сособен ли обучаться"
-    /*if (!person.isAbleToStudy()){
-        if (person.getAge() >= this->borderChildrenToAdults() && person.getMentalStability() >= 5
+    if (!person.isAbleToStudy()){
+        if (person.getAge() >= this->borderChildrenToAdults()
+                && person.getMoralHealth() >= 75
                 && person.getAmountOfBlackAccidents() < 5) {
             person.setIsAbleToStudy(true);
-            person.setYearOfEducation(FirstYear);
+            if (person.getYearOfEducation() == NotStudying)
+                person.setYearOfEducation(FirstYear);
         }
     }
 
     // логика "обработка обучения": если может, человек начинает учиться
-    if (person.isAbleToStudy())
-        person.setYearOfEducation(person.getYearOfEducation() + 1);
-    if (person.getYearOfEducation() > 5) {
-        person.setYearOfEducation(0);
-        person.setIsAbleToWork(true);
-        person.setIsAbleToStudy(false);
-    }*/
+    if (person.isAbleToStudy()) {
+        if (person.getMoralHealth() < 40 || person.getPhysicalHealth() < 40) {
+            person.setIsAbleToStudy(false);
+        } else if (person.getYearOfEducation() != FifthYear) {
+            person.setYearOfEducation(static_cast<Education>(person.getYearOfEducation() + 1));
+            person.setMoralHealth(person.getMoralHealth() - 3);
+        } else {
+            person.setYearOfEducation(NotStudying);
+            person.setIsAbleToWork(true);
+            person.setIsAbleToStudy(false);
+        }
+    }
 
     // логика добавления в клиенты службы
     if (person.getMoralHealth() < 70)
