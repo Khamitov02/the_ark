@@ -13,13 +13,15 @@ using std::list;
 class MedicalService : public Service {
 private:
     unsigned int n_staff;                                 // количество рабочих всего
-    unsigned int resources;                               // количество задействованных ресурсов
+    unsigned int resources;                               // количество имеющихся ресурсов
+    unsigned int NeedResources;                           // количество необходимых ресурсов
     double State;                                         // состояние системы по 100-бальной шкале
     unsigned int retirementAge;                           // возраст старения
     double ChildrenDeath;                                 // средняя вероятность, что один ребенок подгибнет в течение года
     double AdultDeath;                                    // средняя вероятность, что один взрослый подгибнет в течение года
     double OldDeath;                                      // средняя вероятность, что один старик подгибнет в течение года
-    double Birth{};                                         // рождаемость в год
+    double Birth;                                         // рождаемость в год
+    unsigned int HealthYearAgo;                           // общее здоровье в прошлом году
 public:
     MedicalService();
 
@@ -28,11 +30,11 @@ public:
     double getState() override;                           // каждая служба должна уметь вернуть свое состояние в процентах, посчитав его в своих терминах
     void setState(double s) override;                     // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
 
-    unsigned int borderAdultsToOldmen() const;                  // возраст старения
-    double deathRateChildren() const;                           // средняя вероятность, что один ребенок подгибнет в течение года
-    double deathRateAdult() const;                              // средняя вероятность, что один взрослый подгибнет в течение года
-    double deathRateOldmen() const;                             // средняя вероятность, что один старик подгибнет в течение года
-    double BirthRate() const;                                   // рождаемость в год
+    unsigned int borderAdultsToOldmen() const;            // возраст старения
+    double deathRateChildren() const;                     // средняя вероятность, что один ребенок подгибнет в течение года
+    double deathRateAdult() const;                        // средняя вероятность, что один взрослый подгибнет в течение года
+    double deathRateOldmen() const;                       // средняя вероятность, что один старик подгибнет в течение года
+    double BirthRate() const;                             // рождаемость в год
 
     unsigned int getResourceDemand() override;            // сколько ресурсов требуется
     unsigned int getResourcePriority() override;          // с каким приоритетом служба будет требовать ресурсы
