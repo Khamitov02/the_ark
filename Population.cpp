@@ -87,6 +87,14 @@ array<list<shared_ptr<Human>>, 7>& Population::getAllClassification()
 }
 
 void Population::processYear() {
+    //рождаемость
+    for(int i = 0; i < TheArk::get_instance()->getMedicalService()->BirthRate(); i++){
+        auto* micro_chelik = new Human();
+        micro_chelik->setAge(0);
+        auto ptr = shared_ptr<Human>(micro_chelik);
+        this->people.push_back(ptr);
+    }
+
     // обработка по возрасту и смертность сразу же, чтобы два раза не ходить
     children = 0;
     adults = 0;
@@ -120,7 +128,7 @@ void Population::processYear() {
             }
         }
         if((*it)->getPhysicalHealth() <= 10 || (*it)->getMoralHealth() <= 5){
-            (*it)->setIsAlive(false);
+            //(*it)->setIsAlive(false);     сейчас очень большая смертность
         }
         if(HisAge > 100){
             (*it)->setIsAlive(false);
