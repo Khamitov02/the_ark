@@ -62,6 +62,22 @@ unsigned int Population::number_staff(Classification_of_humans serves)
 
 }
 
+void  Population::stuff_distribution(list<shared_ptr<Human>>& stuff, unsigned int demand_stuff){
+    auto it = people.begin();
+    int counter = 0;
+    while(it != people.end() && counter < demand_stuff){
+        if((*it)->getAge() > this->borderChildrenToAdults() && (*it)->getAge() < this->borderAdultsToOldmen()){
+            if((*it)->getTypeAsAWorker() == UNDEFINED || (*it)->getTypeAsAWorker() == UNEMPLOYED){
+                stuff.push_back(*it);
+                (*it)->setTypeAsAWorker(WORKER);
+                counter++;
+            }
+        }
+        ++it;
+
+    }
+}
+
 double Population::deathRateChildren()
 {
     return TheArk::get_instance()->getMedicalService()->deathRateChildren();
@@ -94,6 +110,15 @@ void Population::processYear() {
         auto ptr = shared_ptr<Human>(micro_chelik);
         this->people.push_back(ptr);
     }
+    //распределение стафа, сделал бы в цикле, но нужно вызывать каждую ф-ю отдельно
+    stuff_distribution(classifications_of_humans[0], TheArk::get_instance()->getTechnicalService()->getStaffDemand());
+    stuff_distribution(classifications_of_humans[1], TheArk::get_instance()->getBiologicalService()->getStaffDemand());
+    stuff_distribution(classifications_of_humans[2], TheArk::get_instance()->getMedicalService()->getStaffDemand());
+    stuff_distribution(classifications_of_humans[3], TheArk::get_instance()->getNavigationService()->getStaffDemand());
+    stuff_distribution(classifications_of_humans[4], TheArk::get_instance()->getEmergencyService()->getStaffDemand());
+    stuff_distribution(classifications_of_humans[5], TheArk::get_instance()->getSocialService()->getStaffDemand());
+    //
+
 
     // обработка по возрасту и смертность сразу же, чтобы два раза не ходить
     children = 0;

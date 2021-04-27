@@ -24,6 +24,7 @@ private:
     unsigned int borderAdultsToOldmen();
 
     unsigned int number_staff(Classification_of_humans serves);
+    void stuff_distribution(list<shared_ptr<Human>>& stuff, unsigned int demand_stuff);
 
     double deathRateChildren();
     double deathRateAdults();
