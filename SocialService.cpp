@@ -374,9 +374,9 @@ void SocialService::update_person(Human &person) {
     }
 
     // логика добавления в клиенты службы
-    if (person.getMoralHealth() < 70)
+    /*if (person.getMoralHealth() < 70)
         TheArk::get_instance()->getPopulation()->getAllClassification()
         [Classification_of_humans::Clients_Of_Social_Service].
         push_back(shared_ptr<Human>(&person)); // <- добавил поинтер в очередь
-        // пока думаю, как обрабатывать повторы
+        // пока думаю, как обрабатывать повторы*/
 }
