@@ -6,7 +6,7 @@
 EmergencyService::EmergencyService()
 {
     this->State = 100;
-    this->Staff; //персонала в данный момент
+    this->Staff = 100; //персонала в данный момент
     this->max_Staff = 100;//максимальное количество персонала в службе
     this->Resources = 100;
     this->max_Resources = 100;
