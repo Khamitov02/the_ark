@@ -19,5 +19,54 @@ public:
     void setState(double s) override;                       // функция для инициализации, каждая служба должна уметь получить состояние в процентах и пересчитать  его в своих терминах
 };
 
+struct coord;
+
+int GetTypeId (int x);
+
+
+class Animal {
+public:
+    char name;
+    int id_biom;
+    int heal;
+    bool predator;
+    bool haveBaby;
+
+    void take_food(int feed);
+};
+class Pig : public Animal{
+public:
+    Pig();
+};
+class Cow : public Animal{
+public:
+    Cow();
+};
+class Wolf : public Animal
+{
+public:
+    Wolf();
+
+};
+class Biom
+{
+public:
+    double water; // <= 10000, if water 0 -> no animals
+    double land; // <= 10000  if land 0 -> no animals
+    double forest; // <= 10000, if fprest 0 -> no animals
+    int id; //
+    int free; //value of free spaces
+    bool init; // was init?
+
+    Biom();
+
+    Biom (double water, double forest, int id);
+
+    ~Biom ();
+
+    void InitFree(); // Init function{
+
+};
+
 
 #endif //THE_ARK_BIOLOGICALSERVICE_H
