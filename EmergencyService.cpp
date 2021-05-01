@@ -67,42 +67,37 @@ void EmergencyService:: process_year()
 {
     // обновление состояния корабля в зависимости от кол-ва людей, ресурсов и аварий
 
+    this->changeResources(this->getResourceDemand() - 10);
+    this->changeStaff(5);
+    this->setState(100 * ((this->Staff + this->Resources) / 205));
 
     //генерация чс
     for (auto s : TheArk::get_instance()->getServices())
     {
         this->create_accident(s);
     }
-
-
 }
 
-//для обработки переданных аварий
+//для обработки переданных аварий; меняет состояние корабля в зависимости от тяжести аварии
 void EmergencyService::process_accident(AccidentSeverity as)
 {
-  /*  if (NEGLIGIBLE)
-    {
-
-    }*/
-
+    this->changeResources(-(12 * as + 10));
+    this->changeStaff(4 * as + 10);
+    this->setState(100 - (as * 5.1 + 10));
 }
 
 double EmergencyService::getState()
 {
-    return State;
+    return this->State;
 }
 
 void EmergencyService::setState(double s)
 {
-    State = s;
-}
-
-unsigned int EmergencyService::getStaffDemand()
-{
-    return this->max_Staff - this->Staff;
+    this->State = s;
 }
 
 // управление ресурсами
+//----------------------------
 bool EmergencyService::changeResources(int delta)
 {
     if (delta < 0)//отняли ресурсы; из-за аварии 
@@ -123,17 +118,35 @@ unsigned int EmergencyService::getResourceDemand()
     
 }
 
+//-------------------------------------
+
+//управление перосналом
+
+//-------------------------------------
 
 unsigned int EmergencyService::getNStaff()
 {
     return TheArk::get_instance()->getPopulation()->getAllClassification()[Emergency_Service].size();
 }
 
+//добавление недостающего персонала реализовано в getNStaff; здесь только убиваем в случае аварий + ежегодая убыль
+bool EmergencyService::changeStaff(int delta)
+{
+    this->Staff -= delta;
+    list<shared_ptr<Human>>& people = TheArk::get_instance()->getPopulation()->getAllClassification()[Emergency_Service];
+    auto it = people.begin();
+    for (int i = 0; i < delta; i++)
+    {
+        (*it)->setIsAlive(false);
+        it++;
+    }
 
-//ресурсы обновляешь сам - с помощью метода , который засунуть в процесс еар каждый год сколько-то берешь, сколько отдаешь
-//ресурсы - это типа как хранилище
-//сам берешь, никто не дает
+    return true;
+}
 
+unsigned int EmergencyService::getStaffDemand()
+{
+    return this->max_Staff - this->Staff;
+}
 
-
-
+//----------------------------------------

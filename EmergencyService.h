@@ -45,6 +45,7 @@ public:
     unsigned int getStaffDemand();
     unsigned int getResourceDemand();
     bool changeResources(int delta);
+    bool changeStaff(int delta);
     
 };
 
