@@ -132,14 +132,14 @@ unsigned int EmergencyService::getNStaff()
 //добавление недостающего персонала реализовано в getNStaff; здесь только убиваем в случае аварий + ежегодая убыль
 bool EmergencyService::changeStaff(int delta)
 {
-    this->Staff -= delta;
-    list<shared_ptr<Human>>& people = TheArk::get_instance()->getPopulation()->getAllClassification()[Emergency_Service];
-    auto it = people.begin();
-    for (int i = 0; i < delta; i++)
-    {
-        (*it)->setIsAlive(false);
-        it++;
-    }
+    //this->Staff -= delta;
+    //list<shared_ptr<Human>>& people = TheArk::get_instance()->getPopulation()->getAllClassification()[Emergency_Service];
+    //auto it = people.begin();
+    //for (int i = 0; i < delta; i++)
+    //{
+    //    (*it)->setIsAlive(false);
+    //    it++;
+    //}
 
     return true;
 }
