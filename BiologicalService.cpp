@@ -113,13 +113,14 @@ public:
 
 };
 
+const int x = 5;
+const int y = 5;
 
 void process_year()
 {
     double w, f, l;
-    int x, y, n;
+    int n;
     n = 0;
-    x = 5; y = 5;
     int i0 = 0;
     int c = GetTypeId(x);
 
